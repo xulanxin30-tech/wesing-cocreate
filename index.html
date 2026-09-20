@@ -796,6 +796,8 @@
     t.addEventListener('click',function(){
       document.querySelectorAll('#sStep1 .tagx').forEach(function(x){x.classList.remove('on');});
       t.classList.add('on');sRoot=t.getAttribute('data-root');sUpdate();
+      // 选完地区，自动进入下一步
+      setTimeout(function(){nextStep();},500);
     });
   });
   document.querySelectorAll('#sStep2 .tagx').forEach(function(t){
@@ -814,11 +816,12 @@
       sUpdate();
     });
   });
-  document.getElementById('sBtnNext').addEventListener('click',function(){
+  function nextStep(){
     if(sStep===1&&sRoot){sStep=2;document.getElementById('sStep1').style.display='none';
       document.getElementById('sStep2').style.display='block';
       document.getElementById('sStep2Bar').style.background='var(--purple)';
-      document.getElementById('sBtnPrev').style.display='block';}
+      document.getElementById('sBtnPrev').style.display='block';
+      toast('已选根：'+sRoot+' · 继续选语言');}
     else if(sStep===2&&sLangs.length){sStep=3;document.getElementById('sStep2').style.display='none';
       document.getElementById('sStep3').style.display='block';
       document.getElementById('sStep3Bar').style.background='var(--purple)';}
@@ -838,7 +841,8 @@
       setTimeout(function(){document.getElementById('sResult').querySelector('.pop').classList.add('go');},80);
     }
     sUpdate();
-  });
+  }
+  document.getElementById('sBtnNext').addEventListener('click',nextStep);
   document.getElementById('sBtnPrev').addEventListener('click',function(){
     if(sStep===2){sStep=1;document.getElementById('sStep2').style.display='none';
       document.getElementById('sStep1').style.display='block';
