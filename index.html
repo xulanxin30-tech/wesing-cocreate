@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>湾区共创 · Wesing「共创」板块 · 可交互原型</title>
+<title>Wesing 共创版 · 可交互原型</title>
 <style>
   :root{
     --purple:#7C4DFF; --purple2:#B388FF; --pink:#FF5FA8; --red:#FF453A;
@@ -13,8 +13,8 @@
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{background:radial-gradient(1000px 700px at 20% 10%,#1b1033 0%,#05050a 60%);
     min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-    font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--txt);padding:18px 10px;gap:14px}
-  .hint{font-size:11.5px;color:var(--sub);letter-spacing:.5px;text-align:center;max-width:360px}
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--txt);padding:16px 10px;gap:12px}
+  .hint{font-size:11.5px;color:var(--sub);letter-spacing:.3px;text-align:center;max-width:370px;line-height:1.6}
   .hint b{color:#c9a0ff}
   .phone{width:350px;height:680px;border-radius:44px;position:relative;overflow:hidden;
     background:#000;border:7px solid #1c1c28;box-shadow:0 30px 80px rgba(124,77,255,.35)}
@@ -53,10 +53,9 @@
   @keyframes fill{to{width:100%}}
 
   .chip{display:inline-block;font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:7px;margin-right:3px}
-  .chip.gd{background:rgba(255,196,107,.15);color:var(--gold)}
   .chip.hk{background:rgba(255,95,168,.15);color:var(--pink)}
-  .chip.mo{background:rgba(14,230,216,.15);color:var(--cyan)}
-  .chip.sg{background:rgba(124,77,255,.2);color:var(--purple2)}
+  .chip.c{background:rgba(14,230,216,.15);color:var(--cyan)}
+  .chip.gd{background:rgba(255,196,107,.15);color:var(--gold)}
 
   .tagx{font-size:9px;padding:4px 10px;border-radius:8px;background:rgba(255,255,255,.06);border:1px solid var(--line);
     cursor:pointer;transition:.2s;user-select:none}
@@ -69,19 +68,38 @@
     padding:8px 14px;border-radius:20px;cursor:pointer}
   .row-cta{display:flex;gap:8px;justify-content:center;margin-top:auto;padding:8px 0 4px;flex-shrink:0}
 
-  .banner{background:linear-gradient(120deg,#3b1163,#7C4DFF 60%,#0EE6D8);border-radius:14px;padding:12px;position:relative}
+  .banner{background:linear-gradient(120deg,#3b1163,#7C4DFF 60%,#0EE6D8);border-radius:14px;padding:12px;position:relative;cursor:pointer}
   .banner .b1{font-size:13.5px;font-weight:800}.banner .b2{font-size:9px;color:rgba(255,255,255,.82);margin-top:2px}
 
-  .word-block{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;padding:7px 9px;font-size:9.5px;line-height:1.65}
-  .word-block .lang{font-size:8.5px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:2px}
-  .word-block .lang.cn{color:var(--cyan)}
-  .lyric-line{opacity:0;transition:opacity .3s;cursor:pointer;border-radius:4px}
-  .lyric-line.show{opacity:1}
-  .lyric-line:hover{background:rgba(124,77,255,.15)}
+  .searchbar{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.07);border-radius:16px;
+    padding:8px 13px;font-size:11px;color:var(--sub);cursor:pointer}
+  .searchbar input{flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-size:11px;font-family:inherit}
 
-  .record-row{display:flex;align-items:center;gap:7px;margin-top:7px}
-  .record-row .who{width:66px;font-size:8.5px;color:var(--sub);flex-shrink:0}
-  .ok-tick{color:var(--cyan);font-weight:800}
+  .songrow{display:flex;align-items:center;gap:10px;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.06);cursor:pointer}
+  .songrow:active{background:rgba(124,77,255,.08)}
+  .songrow .cov{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#3b1163,#7C4DFF);
+    display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+  .songrow .cov.c2{background:linear-gradient(135deg,#0e7c7b,#0EE6D8)}
+  .songrow .cov.c3{background:linear-gradient(135deg,#c0392b,#f39c12)}
+  .songrow .cov.c4{background:linear-gradient(135deg,#2c3e50,#8e44ad)}
+  .songrow .cov.c5{background:linear-gradient(135deg,#b8860b,#f5d76e)}
+
+  .lyricbox{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;padding:0 16px}
+  .lyricbox .ly{font-size:14px;font-weight:700;color:rgba(255,255,255,.28);transition:.4s;padding:7px 0;text-align:center;line-height:1.5}
+  .lyricbox .ly.cur{font-size:18px;color:var(--txt);text-shadow:0 0 18px rgba(124,77,255,.6)}
+  .lyricbox .ly.next{color:rgba(255,255,255,.55)}
+
+  .recbtn{width:62px;height:62px;border-radius:50%;background:var(--red);border:none;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:12px;transition:.2s;
+    box-shadow:0 0 22px rgba(255,69,58,.5)}
+  .recbtn:active{transform:scale(.92)}
+  .recbtn.ing{background:#6b0f0a;animation:recPulse 1s infinite}
+  @keyframes recPulse{0%,100%{box-shadow:0 0 14px rgba(255,69,58,.4)}50%{box-shadow:0 0 30px rgba(255,69,58,.9)}}
+  .recbtn.small{width:44px;height:44px;font-size:10px;box-shadow:none;background:var(--card);color:var(--txt);border:1px solid var(--line)}
+
+  .wavebar{display:flex;align-items:flex-end;gap:2px;height:20px}
+  .wavebar i{width:3px;background:linear-gradient(180deg,var(--purple),var(--cyan));border-radius:2px;animation:wave .9s ease-in-out infinite}
+  @keyframes wave{0%,100%{height:4px}50%{height:18px}}
 
   .spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;
     animation:spin 1.2s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
@@ -90,9 +108,16 @@
     background:linear-gradient(180deg,transparent,rgba(124,77,255,.35),transparent);animation:scanline 1s linear infinite}
   @keyframes scanline{to{transform:translateY(150px)}}
 
-  .wavebar{display:flex;align-items:flex-end;gap:2px;height:20px}
-  .wavebar i{width:3px;background:linear-gradient(180deg,var(--purple),var(--cyan));border-radius:2px;animation:wave .9s ease-in-out infinite}
-  @keyframes wave{0%,100%{height:4px}50%{height:18px}}
+  .record-row{display:flex;align-items:center;gap:7px;margin-top:7px}
+  .record-row .who{width:66px;font-size:8.5px;color:var(--sub);flex-shrink:0}
+  .ok-tick{color:var(--cyan);font-weight:800}
+
+  .word-block{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;padding:7px 9px;font-size:9.5px;line-height:1.65}
+  .word-block .lang{font-size:8.5px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:2px}
+  .word-block .lang.cn{color:var(--cyan)}
+  .lyric-line{opacity:0;transition:opacity .3s;cursor:pointer;border-radius:4px}
+  .lyric-line.show{opacity:1}
+  .lyric-line:hover{background:rgba(124,77,255,.15)}
 
   .melody{display:flex;align-items:center;gap:9px;cursor:pointer;border:1px solid var(--line);border-radius:12px;
     padding:9px 10px;margin-top:8px;transition:.2s;background:var(--card)}
@@ -103,11 +128,9 @@
   .earth{width:70px;height:70px;margin:0 auto;position:relative}
   .earth svg{width:100%;height:100%;animation:spinS 7s linear infinite}
   @keyframes spinS{to{transform:rotate(360deg)}}
-
   .gba{position:absolute;top:8px;right:8px;background:linear-gradient(90deg,var(--purple),var(--pink));
     font-size:7.5px;font-weight:800;padding:2px 6px;border-radius:7px;letter-spacing:1px}
   .rank{font-weight:800;color:var(--gold)}
-  .big-num{font-size:40px;font-weight:900;text-align:center;line-height:1}
 
   .navbar{position:absolute;left:0;right:0;bottom:0;height:56px;background:rgba(14,13,24,.96);
     backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;z-index:50}
@@ -130,96 +153,130 @@
   <div class="screen" id="screen">
     <div class="toast" id="toast"></div>
 
-    <!-- ======== V1 主页（Wesing Songbook） ======== -->
+    <!-- ========== V1 主页 ========== -->
     <div class="view active" id="v-home">
       <div class="sc-hd">
         <div class="avatar" style="width:28px;height:28px;font-size:12px">阿</div>
         <div class="tt" style="font-size:13px">Wesing · Songbook</div>
-        <span class="tag" style="background:rgba(255,95,168,.15);color:var(--pink)">NEW 板块</span>
+        <span class="tag" style="background:rgba(255,95,168,.15);color:var(--pink)">共创版</span>
       </div>
-      <div class="anim" style="background:rgba(255,255,255,.07);border-radius:16px;padding:7px 12px;font-size:10px;color:var(--sub)">🔍 Search for songs or artists</div>
 
-      <div style="font-size:9px;color:var(--sub);margin-top:14px;margin-bottom:6px">功能入口 · 长按任意图标查看 · 点「共创」进入新板块</div>
+      <div class="searchbar anim" id="homeSearch">
+        <span>🔍</span>
+        <span style="flex:1">搜索歌曲或歌手…</span>
+      </div>
+
+      <div class="banner anim" style="margin-top:10px" id="homeBanner">
+        <div class="b1">🌉 新板块上线：「湾区共创」</div>
+        <div class="b2">与三地音乐人相识 · 共创 · 出海</div>
+      </div>
+
+      <div style="font-size:9px;color:var(--sub);margin-top:12px;margin-bottom:4px">功能入口</div>
       <div style="display:flex;gap:12px;justify-content:space-between">
         <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Local</div></div>
         <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♫</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Duet</div></div>
         <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Acap</div></div>
         <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">▶</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Live</div></div>
-        <div style="text-align:center" id="homeC5">
+        <div style="text-align:center">
           <div style="width:44px;height:44px;margin:auto;border-radius:50%;background:var(--purple);
             display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;cursor:pointer;
-            box-shadow:0 0 14px rgba(124,77,255,.7)" id="homeC5Btn">共</div>
+            box-shadow:0 0 14px rgba(124,77,255,.7)" id="homeC5">共</div>
           <div style="font-size:8px;color:var(--purple2);margin-top:3px;font-weight:800">共创 · NEW</div>
           <div class="dot blink" style="width:6px;height:6px;border-radius:50%;background:var(--pink);margin:2px auto 0"></div>
         </div>
       </div>
 
-      <div class="card anim" style="margin-top:16px;display:flex;gap:9px;align-items:center">
-        <div class="avatar" style="background:linear-gradient(135deg,#3b1163,#7C4DFF);width:40px;height:40px;font-size:15px">🎶</div>
-        <div style="flex:1">
-          <div style="font-size:11px;font-weight:700">《桥》· 普粤双词版</div>
-          <div style="font-size:8.5px;color:var(--sub);margin-top:2px">阿嫦 × JAY × 黎生 · 湾区共创</div>
-        </div>
-        <span class="chip hk">共创作品</span>
-      </div>
-      <div class="card anim" style="margin-top:9px">
-        <div style="font-size:11px;font-weight:700">🔥 你错过了这些</div>
-        <div style="font-size:8.5px;color:var(--sub);margin-top:4px">今晚 20:00 · 粤语金曲之夜歌房 · 32 人在线</div>
-      </div>
-      <div style="text-align:center;margin-top:auto;padding-bottom:6px;font-size:9.5px;color:var(--sub)">👆 点紫色「共」字图标，进入新板块</div>
+      <div style="font-size:9px;color:var(--sub);margin-top:14px;margin-bottom:2px">为你推荐 · 点歌去唱</div>
+      <div id="homeSongs"></div>
+
+      <div style="text-align:center;margin-top:auto;padding-bottom:4px;font-size:9px;color:var(--sub)">👆 试试：点上面搜索框搜歌，或点歌曲去唱</div>
     </div>
 
-    <!-- ======== V2 共创广场 ======== -->
+    <!-- ========== V2 搜索 ========== -->
+    <div class="view" id="v-search">
+      <div class="sc-hd">
+        <div class="back" data-nav="home">‹</div>
+        <div style="flex:1;background:rgba(255,255,255,.07);border-radius:16px;padding:7px 12px;display:flex;align-items:center;gap:6px">
+          <span style="font-size:11px">🔍</span>
+          <input id="searchInput" placeholder="搜索歌曲或歌手…" autocomplete="off" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-size:11px;font-family:inherit">
+        </div>
+      </div>
+      <div style="font-size:9px;color:var(--sub);margin-bottom:4px">搜索结果 · 点歌可去 K 歌</div>
+      <div id="searchList"></div>
+      <div id="searchEmpty" style="display:none;text-align:center;padding:30px 0;font-size:11px;color:var(--sub)">没有找到相关歌曲，试试「桥」「海阔天空」「月亮」</div>
+    </div>
+
+    <!-- ========== V3 演唱页 ========== -->
+    <div class="view" id="v-sing">
+      <div class="sc-hd">
+        <div class="back" data-nav="home">‹</div>
+        <div class="tt" id="singTitle" style="font-size:14px">歌名</div>
+        <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">K 歌</span>
+      </div>
+
+      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden" id="singArea">
+        <div class="lyricbox" id="lyricBox"></div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:22px;padding:6px 0 10px;flex-shrink:0">
+          <div style="text-align:center">
+            <div class="recbtn small" id="btnRestart" style="display:none">↻</div>
+            <div style="font-size:7.5px;color:var(--sub);margin-top:3px" id="lblRestart">重录</div>
+          </div>
+          <div style="text-align:center">
+            <div class="recbtn" id="btnRec">🎤</div>
+            <div style="font-size:8.5px;color:var(--sub);margin-top:5px" id="recLabel">开始录制</div>
+          </div>
+          <div style="text-align:center">
+            <div class="recbtn small" id="btnDone" style="display:none">✔</div>
+            <div style="font-size:7.5px;color:var(--sub);margin-top:3px" id="lblDone">完成</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:0 6px 8px;flex-shrink:0">
+          <span style="font-size:9px;color:var(--sub)" id="timeCode">00:00:00</span>
+          <div class="bar" id="songBar"><i></i></div>
+          <span style="font-size:9px;color:var(--cyan)" id="recState">待机</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== V4 共创广场 ========== -->
     <div class="view" id="v-square">
       <div class="sc-hd">
         <div class="back" data-nav="home">‹</div>
         <div class="tt">湾区共创</div>
         <span class="tag" style="background:rgba(124,77,255,.2);color:#c9a0ff">📍 全球华语音乐人</span>
       </div>
-      <div class="anim"><span class="chip gd">广州</span><span class="chip hk">香港</span><span class="chip mo">澳门</span><span class="chip sg">新加坡</span><span class="chip">洛杉矶</span>
+      <div class="anim"><span class="chip gd">广州</span><span class="chip hk">香港</span><span class="chip mo">澳门</span><span class="chip c">新加坡</span><span class="chip">洛杉矶</span>
         <span style="float:right;font-size:8px;color:var(--sub)">1.2 万人在线</span></div>
 
-      <div class="banner anim" style="margin-top:8px;cursor:pointer" id="squareBanner">
+      <div class="banner anim" style="margin-top:8px" id="squareBanner">
         <div class="b1">🎤 创建你的「湾区声纹」，找到文化互补的队友</div>
-        <div class="b2">第一次进入？3 步完成 · 只需 30 秒</div>
+        <div class="b2">第一次进入？3 步完成 · 只需 30 秒 · 点我进入</div>
       </div>
 
-      <div style="font-size:9px;color:var(--sub);margin-top:12px;margin-bottom:2px">跨地域共创作品</div>
-      <div class="card songcard anim" style="display:flex;gap:9px;align-items:center">
-        <div class="avatar" style="background:linear-gradient(135deg,#0e7c7b,#0EE6D8);width:38px;height:38px;font-size:14px">🎵</div>
-        <div style="flex:1"><div style="font-size:10.5px;font-weight:700">《Hello 大湾》翻唱共创</div>
-        <div style="font-size:8.5px;color:var(--sub);margin-top:2px">广州 × 新加坡 · 4 人 · 已完成</div></div>
-        <span class="chip c" style="background:rgba(14,230,216,.15);color:var(--cyan)">已发布</span>
-      </div>
+      <div style="font-size:9px;color:var(--sub);margin-top:12px;margin-bottom:2px">跨地域共创作品 · 点歌可唱</div>
+      <div id="squareSongs"></div>
+
       <div class="card glow anim" style="margin-top:8px;cursor:pointer" id="squareTeam">
         <div style="font-size:9px;font-weight:800;color:var(--gold)">🎯 组队需求 · 文化互补</div>
         <div style="font-size:10.5px;margin-top:5px;line-height:1.5">粤剧花旦 × 粤语 Rapper × 葡式吉他手<br>
-          <span style="font-size:8.5px;color:var(--sub)">「想做一首融三城味道的歌」</span></div>
-        <div style="margin-top:6px"><span class="tagx" style="cursor:default">粤剧</span> <span class="tagx" style="cursor:default">Rap</span> <span class="tagx" style="cursor:default">Fado</span></div>
-        <div style="text-align:right;margin-top:4px;color:var(--purple2);font-size:9px;font-weight:700">点我 → 我也要组队</div>
-      </div>
-      <div class="card anim" style="margin-top:8px">
-        <div style="font-size:10px;font-weight:800">🏆 共创挑战：「一曲双词」· 10 月赛</div>
-        <div style="font-size:8.5px;color:var(--sub);margin-top:4px">同一旋律，填普粤双词 · 3,241 人报名 · 9.30 截止</div>
+          <span style="font-size:8.5px;color:var(--sub)">「想做一首融三城味道的歌」点我组队</span></div>
       </div>
     </div>
 
-    <!-- ======== V3 声纹档案 ======== -->
+    <!-- ========== V5 声纹 ========== -->
     <div class="view" id="v-sound">
       <div class="sc-hd">
         <div class="back" data-nav="square">‹</div>
         <div class="tt">我的湾区声纹</div>
         <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">3 步 · 30 秒</span>
       </div>
-
       <div style="display:flex;gap:5px;margin-bottom:8px">
         <div style="flex:1;height:3px;border-radius:2px;background:var(--purple)" id="sStep1Bar"></div>
         <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.1)" id="sStep2Bar"></div>
         <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.1)" id="sStep3Bar"></div>
       </div>
 
-      <!-- 步骤1：选根 -->
-      <div id="sStep1" class="anim">
+      <div id="sStep1">
         <div style="font-size:13px;font-weight:800;margin-bottom:2px">① 你的根在哪？</div>
         <div style="font-size:9px;color:var(--sub);margin-bottom:8px">选择一个地域标签</div>
         <div style="display:flex;flex-wrap:wrap;gap:7px">
@@ -231,8 +288,6 @@
           <span class="tagx" data-root="海外华埠">海外华埠</span>
         </div>
       </div>
-
-      <!-- 步骤2：选语言 -->
       <div id="sStep2" style="display:none">
         <div style="font-size:13px;font-weight:800;margin-bottom:2px">② 你会说几种话？</div>
         <div style="font-size:9px;color:var(--sub);margin-bottom:8px">可多选</div>
@@ -246,8 +301,6 @@
         </div>
         <div style="font-size:9px;color:var(--sub);margin-top:8px">已选：<b id="langCount" style="color:var(--cyan)">0</b> 项</div>
       </div>
-
-      <!-- 步骤3：选风格 -->
       <div id="sStep3" style="display:none">
         <div style="font-size:13px;font-weight:800;margin-bottom:2px">③ 你唱什么风格？</div>
         <div style="font-size:9px;color:var(--sub);margin-bottom:8px">可多选</div>
@@ -266,29 +319,25 @@
         <button class="btn-main" id="sBtnNext">下一步</button>
       </div>
 
-      <!-- 基因卡结果 -->
       <div id="sResult" style="display:none">
         <div class="card glow pop" style="text-align:center;padding:14px">
           <div style="font-size:9.5px;font-weight:800;color:#c9a0ff">🧬 文化基因卡 · AI 已生成</div>
-          <div style="font-size:16px;font-weight:900;margin-top:8px" id="geneName">阿嫦</div>
+          <div style="font-size:16px;font-weight:900;margin-top:8px">阿嫦</div>
           <div style="font-size:9.5px;color:var(--sub);margin-top:3px" id="geneRoot">广东 · 潮汕</div>
           <div style="margin-top:9px" id="geneTags"></div>
-          <div style="font-size:9px;color:var(--sub);margin-top:8px">文化基因辨识度 <b style="color:#8ff5ef">92%</b> · 来自 236 首作品</div>
+          <div style="font-size:9px;color:var(--sub);margin-top:8px">文化基因辨识度 <b style="color:#8ff5ef">92%</b></div>
         </div>
-        <div class="row-cta">
-          <button class="btn-main" id="goMatch">为她找队友 →</button>
-        </div>
+        <div class="row-cta"><button class="btn-main" id="goMatch">为她找队友 →</button></div>
       </div>
     </div>
 
-    <!-- ======== V4 乐缘匹配 ======== -->
+    <!-- ========== V6 匹配 ========== -->
     <div class="view" id="v-match">
       <div class="sc-hd">
         <div class="back" data-nav="sound">‹</div>
         <div class="tt">乐缘匹配</div>
         <span class="tag" style="background:rgba(255,95,168,.18);color:var(--pink)">AI 撮合</span>
       </div>
-
       <div class="anim">
         <div style="font-size:12px;font-weight:800;margin-bottom:2px">想共创什么主题？</div>
         <div style="font-size:9px;color:var(--sub);margin-bottom:8px">选择一个主题</div>
@@ -299,18 +348,13 @@
           <span class="tagx" data-topic="童年歌谣">童年歌谣</span>
         </div>
       </div>
-
-      <div class="row-cta">
-        <button class="btn-main" id="btnMatch">开始匹配</button>
-      </div>
-
+      <div class="row-cta"><button class="btn-main" id="btnMatch">开始匹配</button></div>
       <div id="matchLoading" style="display:none;margin-top:8px" class="scan card">
         <div style="display:flex;align-items:center;gap:9px;padding:2px">
           <div class="spin"></div>
           <div style="font-size:10px;color:var(--sub)">正在扫描 1.2 万位三地音乐人…</div>
         </div>
       </div>
-
       <div id="matchResult" style="display:none">
         <div style="font-size:9px;color:var(--sub);margin-top:10px;margin-bottom:4px">为你找到 3 位文化互补的队友</div>
         <div class="card pop" style="display:flex;gap:9px;align-items:center">
@@ -328,11 +372,8 @@
           <div style="flex:1"><div style="font-size:11px;font-weight:800">A · 洛杉矶 · 华裔女声</div>
           <div style="font-size:8.5px;color:#b58bff;margin-top:2px">✨ 英文咬字，兜住方言韵脚</div></div>
         </div>
-        <div class="row-cta">
-          <button class="btn-main" id="btnTeam">邀请他们一起唱 · 组队 →</button>
-        </div>
+        <div class="row-cta"><button class="btn-main" id="btnTeam">邀请他们一起唱 · 组队 →</button></div>
       </div>
-
       <div id="teamCard" style="display:none">
         <div class="card glow pop" style="text-align:center;padding:13px">
           <div style="font-size:10px;font-weight:800;color:#c9a0ff">🎉 组队成功 · 共创项目已创建</div>
@@ -343,31 +384,26 @@
             <div class="avatar" style="width:26px;height:26px;font-size:11px;background:linear-gradient(135deg,#2c3e50,#8e44ad)">A</div>
           </div>
         </div>
-        <div class="row-cta">
-          <button class="btn-main" id="btnStart">开始创作 →</button>
-        </div>
+        <div class="row-cta"><button class="btn-main" id="btnStart">开始创作 →</button></div>
       </div>
     </div>
 
-    <!-- ======== V5 双词工坊 ======== -->
+    <!-- ========== V7 双词工坊 ========== -->
     <div class="view" id="v-studio">
       <div class="sc-hd">
         <div class="back" data-nav="match">‹</div>
         <div class="tt">共创工坊 · 《桥》</div>
-        <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">AI 双词工坊</span>
+        <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">AI 双词</span>
       </div>
-
-      <!-- 三步进度 -->
       <div style="display:flex;gap:5px;margin-bottom:8px">
         <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.1)" id="wBar1"></div>
         <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.1)" id="wBar2"></div>
         <div style="flex:1;height:3px;border-radius:2px;background:rgba(255,255,255,.1)" id="wBar3"></div>
       </div>
 
-      <!-- 步骤1：选旋律 -->
       <div id="wStep1">
         <div style="font-size:12px;font-weight:800;margin-bottom:2px">① 选一段旋律</div>
-        <div style="font-size:9px;color:var(--sub);margin-bottom:4px">AI 已按主题「一曲双词」推荐 · 点击试听并选中</div>
+        <div style="font-size:9px;color:var(--sub);margin-bottom:4px">AI 已按主题推荐 · 点击试听并选中</div>
         <div class="melody" data-m="m1"><div class="play">▶</div>
           <div style="flex:1"><div style="font-size:10.5px;font-weight:700">《桥》旋律 A · 南音动机</div>
           <div style="font-size:8px;color:var(--sub)">五声音阶 · 潮汕韵味</div></div>
@@ -386,7 +422,6 @@
         <div class="row-cta"><button class="btn-main" id="w1Next" style="display:none">下一步 · AI 写双语词</button></div>
       </div>
 
-      <!-- 步骤2：AI 双词 -->
       <div id="wStep2" style="display:none">
         <div style="font-size:12px;font-weight:800;margin-bottom:2px">② AI 生成双语词</div>
         <div style="font-size:9px;color:var(--sub);margin-bottom:6px">同一段旋律，两版歌词 · 点击词句可微调</div>
@@ -407,7 +442,6 @@
           </div>
           <div style="font-size:8px;color:var(--sub);margin-top:5px">🎯 九声调校 · 光(gwong¹)/路(lou⁶) 押韵通过</div>
         </div>
-        <div style="font-size:9px;color:var(--sub);margin-top:6px">微调面板（点任意粤语词句试试）</div>
         <div id="w2Replace" style="display:none;margin-top:6px" class="card">
           <div style="font-size:9.5px;font-weight:800;color:var(--gold)">替换建议 · 「返嚟」</div>
           <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
@@ -419,40 +453,33 @@
         <div class="row-cta"><button class="btn-main" id="w2Next" style="display:none">已认领粤语版 · 下一步</button></div>
       </div>
 
-      <!-- 步骤3：分轨录制 -->
       <div id="wStep3" style="display:none">
         <div style="font-size:12px;font-weight:800;margin-bottom:2px">③ 三地分轨录制</div>
         <div style="font-size:9px;color:var(--sub);margin-bottom:6px">三个人，三座城市，各自在手机上唱自己那一句</div>
         <div class="card">
-          <div class="record-row"><span class="who">阿嫦 · 潮汕</span><div class="bar" id="rBar1"><i></i></div><span id="rT1" class="ok-tick" style="color:var(--sub);font-size:9px">等待</span></div>
-          <div class="record-row"><span class="who">JAY · 香港</span><div class="bar" id="rBar2"><i></i></div><span id="rT2" class="ok-tick" style="color:var(--sub);font-size:9px">等待</span></div>
-          <div class="record-row"><span class="who">A · 洛杉矶</span><div class="bar" id="rBar3"><i></i></div><span id="rT3" class="ok-tick" style="color:var(--sub);font-size:9px">等待</span></div>
-          <div style="font-size:8px;color:var(--sub);margin-top:6px">三地真机同步录制中（演示为模拟）</div>
+          <div class="record-row"><span class="who">阿嫦 · 潮汕</span><div class="bar" id="rBar1"><i></i></div><span id="rT1" style="color:var(--sub);font-size:9px">等待</span></div>
+          <div class="record-row"><span class="who">JAY · 香港</span><div class="bar" id="rBar2"><i></i></div><span id="rT2" style="color:var(--sub);font-size:9px">等待</span></div>
+          <div class="record-row"><span class="who">A · 洛杉矶</span><div class="bar" id="rBar3"><i></i></div><span id="rT3" style="color:var(--sub);font-size:9px">等待</span></div>
         </div>
         <div class="row-cta"><button class="btn-main" id="w3Record">开始录制</button></div>
-
         <div id="w3Synth" style="display:none">
           <div class="card glow" style="text-align:center;padding:13px;margin-top:10px">
             <div style="font-size:9.5px;font-weight:800;color:#c9a0ff">🤖 AI 对齐 &amp; 合成</div>
             <div style="font-size:26px;font-weight:900;margin-top:6px;color:var(--cyan)" id="synthPct">0%</div>
-            <div class="wavebar" style="justify-content:center;margin-top:6px" id="synthWave" style="display:none">
-              <i style="animation-delay:0s"></i><i style="animation-delay:.08s"></i><i style="animation-delay:.16s"></i><i style="animation-delay:.24s"></i><i style="animation-delay:.32s"></i><i style="animation-delay:.4s"></i><i style="animation-delay:.48s"></i><i style="animation-delay:.56s"></i><i style="animation-delay:.64s"></i><i style="animation-delay:.72s"></i>
-            </div>
-            <div style="font-size:11px;color:var(--sub);margin-top:5px">8 秒副歌 · 三轨合璧</div>
+            <div style="font-size:11px;color:var(--sub);margin-top:5px">三地分轨 · 8 秒副歌</div>
           </div>
-          <div class="row-cta"><button class="btn-main" id="btnDone">完成 · 发布作品 →</button></div>
+          <div class="row-cta"><button class="btn-main" id="btnDone2">完成 · 出海 →</button></div>
         </div>
       </div>
     </div>
 
-    <!-- ======== V6 出海舞台 ======== -->
+    <!-- ========== V8 出海舞台 ========== -->
     <div class="view" id="v-stage">
       <div class="sc-hd">
         <div class="back" data-nav="studio">‹</div>
         <div class="tt">湾区舞台 · 出海</div>
         <span class="tag" style="background:rgba(255,196,107,.15);color:var(--gold)">🌏 全球</span>
       </div>
-
       <div class="card pop" style="text-align:center;padding:13px;position:relative;background:linear-gradient(135deg,rgba(124,77,255,.2),rgba(14,230,216,.08))">
         <span class="gba">MADE IN GBA</span>
         <div style="font-size:15px;font-weight:900">《桥》· 普粤双词共创版</div>
@@ -460,7 +487,6 @@
         <div style="margin-top:7px"><span class="chip gd">粤剧腔</span><span class="chip hk">港式Flow</span><span class="chip mo">葡式吉他</span></div>
         <div class="row-cta"><button class="btn-main" id="btnExport">一键出海 →</button></div>
       </div>
-
       <div id="stageResult" style="display:none">
         <div class="card" style="margin-top:10px">
           <div style="font-size:9px;font-weight:800;color:#8ff5ef">🌐 AI 多语字幕 · 同一句词</div>
@@ -474,95 +500,233 @@
           <div style="font-size:10px;margin-top:3px;color:var(--sub)">#2 Penang 闽南谣</div>
           <div style="display:flex;justify-content:space-between;margin-top:7px;font-size:10px"><span>海外播放量</span><b style="font-size:14px">12,480</b></div>
           <div class="bar" style="margin-top:4px"><i style="animation:fill 1.6s cubic-bezier(.2,.7,.3,1) forwards"></i></div>
-          <div style="font-size:8px;color:var(--sub);margin-top:5px">5 座城市光点点亮：广州 · 澳门 · 新加坡 · 伦敦 · 洛杉矶</div>
         </div>
-        <div class="row-cta"><button class="btn-main" id="btnEnd">查看完整旅程 →</button></div>
+        <div class="row-cta"><button class="btn-main" id="btnEnd">收尾 →</button></div>
       </div>
     </div>
 
-    <!-- ======== V7 收尾 ======== -->
+    <!-- ========== V9 收尾 ========== -->
     <div class="view" id="v-end" style="background:#08080f">
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:0 20px">
         <div style="font-size:32px">🌉</div>
         <div style="font-size:19px;font-weight:800;line-height:1.7;background:linear-gradient(90deg,#fff,#c9a0ff,#8ff5ef);-webkit-background-clip:text;background-clip:text;color:transparent">文化出海，是每个有根的人的权利</div>
         <div style="font-size:10.5px;color:#c9a0ff;font-weight:700">让每一个有根的人，把家乡声音唱给世界</div>
       </div>
-      <div class="row-cta" style="margin-top:0">
-        <button class="btn-ghost" data-nav="home">回到主页</button>
-      </div>
-      <div style="text-align:center;padding-bottom:12px;font-size:8px;color:var(--sub)">湾区共创 · TME AI HACKATHON · 赛道一</button></div>
+      <div class="row-cta"><button class="btn-ghost" data-nav="home">回到主页</button></div>
+      <div style="text-align:center;padding-bottom:12px;font-size:8px;color:var(--sub)">湾区共创 · TME AI HACKATHON · 赛道一</div>
     </div>
 
   </div>
 
-  <!-- 底部导航 -->
   <div class="navbar" id="navbar">
-    <div class="navitem" data-nav="home"><span class="ic">🏠</span>首页</div>
+    <div class="navitem active" data-nav="home"><span class="ic">🏠</span>首页</div>
     <div class="navitem" data-nav="square"><span class="ic">🧭</span>发现</div>
-    <div class="navitem active new" data-nav="square" style="cursor:pointer"><span class="ic">🌉</span>共创<span class="dot"></span></div>
-    <div class="navitem" data-nav="home"><span class="ic">💬</span>消息</div>
-    <div class="navitem" data-nav="home"><span class="ic">👤</span>我的</div>
+    <div class="navitem new" data-nav="square"><span class="ic">🌉</span>共创<span class="dot"></span></div>
+    <div class="navitem" data-nav="msg"><span class="ic">💬</span>消息</div>
+    <div class="navitem" data-nav="me"><span class="ic">👤</span>我的</div>
   </div>
   <div class="homeind"></div>
 </div>
 
-<div class="hint"><b>可交互原型</b>：点「共」字进入新板块 → 按提示逐步操作：建声纹 → 匹配组队 → 双词共创 → 出海。全程像真实 App 一样点击操作。</div>
+<div class="hint"><b>这是可自由操作的原型</b>：搜歌 → 点歌 → 点 🎤 开始录制 → 唱（歌词会自动走）→ 停止出评分；「共创」板块可建声纹、匹配、双词、出海。每一步都由你亲手点击。</div>
 
 <script>
 (function(){
-  var views=['v-home','v-square','v-sound','v-match','v-studio','v-stage','v-end'];
-  var NAVMAP={'home':'v-home','square':'v-square','sound':'v-sound','match':'v-match','studio':'v-studio','stage':'v-stage','end':'v-end'};
-  var stack=['v-home'];
-  var toastEl=document.getElementById('toast'),toastTimer=null;
+  // ---------- 歌库 ----------
+  var SONGS=[
+    {t:'桥 · 普粤双词版',a:'阿嫦 × JAY × 黎生',tg:'共创',cov:1,
+      lyr:['老屋门前的月光','照着我走远的路上','阿妈话记得返来','唱给世界听','舊屋門前嘅月光','照住我行遠嘅路','阿媽話記得返嚟','唱畀世界聽']},
+    {t:'海阔天空',a:'Beyond',tg:'粤语',cov:2,
+      lyr:['今天我 寒夜里看雪飘过','怀着冷却了的心窝漂远方','风雨里追赶 雾里分不清影踪','天空海阔你与我 可会变','原谅我这一生不羁放纵爱自由']},
+    {t:'喜欢你',a:'Beyond',tg:'粤语',cov:3,
+      lyr:['细雨带风湿透黄昏的街道','抹去雨水双眼无故地仰望','望向孤单的晚灯 是那伤感的记忆','再次泛起心里无数的思念','喜欢你 那双眼动人']},
+    {t:'红日',a:'李克勤',tg:'粤语',cov:4,
+      lyr:['命运就算颠沛流离','命运就算曲折离奇','命运就算恐吓着你做人没趣味','别流泪 心酸 更不应舍弃','我愿能 一生永远陪伴你']},
+    {t:'月亮代表我的心',a:'邓丽君',tg:'经典',cov:5,
+      lyr:['你问我爱你有多深','我爱你有几分','我的情也真 我的爱也真','月亮代表我的心','轻轻的一个吻 已经打动我的心']},
+    {t:'告白气球',a:'周杰伦',tg:'流行',cov:1,
+      lyr:['塞纳河畔 左岸的咖啡','我手一杯 品尝你的美','留下唇印的嘴','花店玫瑰 名字写错谁','告白气球 风吹到对街']},
+    {t:'浮夸',a:'陈奕迅',tg:'粤语',cov:2,
+      lyr:['有人问我 我就会讲','但是无人来','我期待 到无奈 有话要讲','得不到装载','你当我是浮夸吧']},
+    {t:'喜欢你·共创版',a:'湾区共创挑战',tg:'共创',cov:3,
+      lyr:['同一个旋律 两种心事','你唱普通话 我唱粤语','隔着一座桥 听见彼此','歌里没有边界 只有共鸣','唱给世界听']}
+  ];
+  var COV_CLS=['','','c2','c3','c4','c5'];
 
-  function toast(msg){
-    toastEl.textContent=msg;toastEl.classList.add('show');
-    clearTimeout(toastTimer);toastTimer=setTimeout(function(){toastEl.classList.remove('show');},1600);
-  }
+  // ---------- 视图导航 ----------
+  var views=['v-home','v-search','v-sing','v-square','v-sound','v-match','v-studio','v-stage','v-end'];
+  var NAVMAP={'home':'v-home','square':'v-square','sound':'v-sound','match':'v-match','studio':'v-studio','stage':'v-stage','end':'v-end','search':'v-search','sing':'v-sing'};
+  var toastEl=document.getElementById('toast'),toastTimer=null;
+  function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(toastTimer);
+    toastTimer=setTimeout(function(){toastEl.classList.remove('show');},1700);}
+
   function go(view){
+    if(view==='msg'){toast('消息中心（原型占位）');return;}
+    if(view==='me'){toast('个人中心（原型占位）');return;}
     views.forEach(function(v){document.getElementById(v).classList.remove('active');});
-    var el=document.getElementById(view);el.classList.add('active');el.scrollTop=0;
-    // 触发视图内动画
+    var el=document.getElementById(view);
+    if(!el)return;
+    el.classList.add('active');el.scrollTop=0;
     el.querySelectorAll('.anim,.pop').forEach(function(x){x.classList.remove('go');void x.offsetWidth;});
-    el.querySelectorAll('.anim,.pop').forEach(function(x){
-      setTimeout(function(){x.classList.add('go');},60);
-    });
+    el.querySelectorAll('.anim,.pop').forEach(function(x){setTimeout(function(){x.classList.add('go');},60);});
     // 导航高亮
     document.querySelectorAll('.navitem').forEach(function(n){n.classList.remove('active');});
-    if(view==='v-square'){document.querySelectorAll('.navitem')[2].classList.add('active');}
-    else if(view==='v-home'){document.querySelectorAll('.navitem')[0].classList.add('active');}
-    stack.push(view);
+    if(view==='v-home')document.querySelectorAll('.navitem')[0].classList.add('active');
+    else if(view==='v-square'||view==='v-sound'||view==='v-match'||view==='v-studio'||view==='v-stage')document.querySelectorAll('.navitem')[2].classList.add('active');
   }
-  function navTo(name){go(NAVMAP[name]);}
-
-  // 全局导航/返回
   document.querySelectorAll('[data-nav]').forEach(function(el){
-    el.addEventListener('click',function(e){
-      e.stopPropagation();navTo(el.getAttribute('data-nav'));
-    });
+    el.addEventListener('click',function(e){e.stopPropagation();go(NAVMAP[el.getAttribute('data-nav')]||el.getAttribute('data-nav'));});
   });
 
-  // 主页 → 共创
-  document.getElementById('homeC5Btn').addEventListener('click',function(){go('v-square');});
+  // ---------- 歌曲列表渲染 ----------
+  function songRow(song,withTag){
+    var div=document.createElement('div');div.className='songrow';
+    div.innerHTML='<div class="cov '+(COV_CLS[song.cov]||'')+'">🎵</div>'+
+      '<div style="flex:1"><div style="font-size:11.5px;font-weight:700">'+song.t+'</div>'+
+      '<div style="font-size:8.5px;color:var(--sub);margin-top:2px">'+song.a+'</div></div>'+
+      (withTag?'<span class="chip hk">'+song.tg+'</span>':'')+
+      '<span style="font-size:9px;color:var(--purple2);font-weight:700">去唱 ▶</span>';
+    div.addEventListener('click',function(){openSing(song);});
+    return div;
+  }
+  // 主页推荐
+  var homeSongs=document.getElementById('homeSongs');
+  SONGS.slice(0,5).forEach(function(s){homeSongs.appendChild(songRow(s,true));});
+  // 广场共创
+  var squareSongs=document.getElementById('squareSongs');
+  SONGS.filter(function(s){return s.tg==='共创';}).forEach(function(s){squareSongs.appendChild(songRow(s,false));});
 
-  // 广场 banner → 声纹；组队需求 → 声纹（先建声纹再匹配）
+  // ---------- 搜索 ----------
+  var searchInput=document.getElementById('searchInput');
+  var searchList=document.getElementById('searchList');
+  document.getElementById('homeSearch').addEventListener('click',function(){
+    go('v-search');
+    setTimeout(function(){searchInput.focus();},120);
+  });
+  function renderSearch(q){
+    searchList.innerHTML='';
+    q=q.trim().toLowerCase();
+    var hits=SONGS.filter(function(s){return !q||s.t.indexOf(q)>=0||s.a.toLowerCase().indexOf(q)>=0;});
+    document.getElementById('searchEmpty').style.display=hits.length?'none':'block';
+    hits.forEach(function(s){searchList.appendChild(songRow(s,true));});
+  }
+  searchInput.addEventListener('input',function(){renderSearch(searchInput.value);});
+  renderSearch('');
+
+  // ---------- 演唱页 ----------
+  var curSong=null,recTimer=null,timeSec=0,lineIdx=0,lineTimer=null,recording=false;
+  function openSing(song){
+    curSong=song;
+    document.getElementById('singTitle').textContent=song.t+' · '+song.a;
+    // 歌词渲染
+    var box=document.getElementById('lyricBox');box.innerHTML='';
+    song.lyr.forEach(function(l,i){
+      var d=document.createElement('div');d.className='ly';d.textContent=l;
+      if(i===0)d.className='ly cur';
+      box.appendChild(d);
+    });
+    resetSing();
+    go('v-sing');
+  }
+  function resetSing(){
+    clearInterval(recTimer);clearInterval(lineTimer);recording=false;
+    timeSec=0;lineIdx=0;
+    document.getElementById('timeCode').textContent='00:00:00';
+    document.getElementById('recState').textContent='待机';
+    document.getElementById('songBar').classList.remove('fill');
+    var bar=document.querySelector('#songBar i');bar.style.width='0';
+    document.getElementById('btnRec').classList.remove('ing');
+    document.getElementById('btnRec').textContent='🎤';
+    document.getElementById('recLabel').textContent='开始录制';
+    document.getElementById('btnRestart').style.display='none';
+    document.getElementById('btnDone').style.display='none';
+    document.getElementById('lblRestart').style.display='none';
+    document.getElementById('lblDone').style.display='none';
+    var box=document.getElementById('lyricBox');
+    Array.prototype.forEach.call(box.children,function(el,i){el.className='ly'+(i===0?' cur':'');});
+  }
+  function startRec(){
+    recording=true;
+    document.getElementById('btnRec').classList.add('ing');
+    document.getElementById('btnRec').textContent='■';
+    document.getElementById('recLabel').textContent='录制中…点我停止';
+    document.getElementById('recState').textContent='REC ●';
+    document.getElementById('recState').style.color='var(--red)';
+    var bar=document.querySelector('#songBar i');
+    timeSec=0;lineIdx=0;
+    // 时间码 + 进度
+    recTimer=setInterval(function(){
+      timeSec++;
+      var hh=Math.floor(timeSec/3600),mm=Math.floor(timeSec%3600/60),ss=timeSec%60;
+      function p2(n){return(n<10?'0':'')+n;}
+      document.getElementById('timeCode').textContent=p2(hh)+':'+p2(mm)+':'+p2(ss);
+      bar.style.width=Math.min(100,timeSec/curSong.lyr.length*18)+'%';
+    },1000);
+    // 歌词推进
+    lineTimer=setInterval(function(){
+      if(lineIdx<curSong.lyr.length-1){
+        lineIdx++;
+        var box=document.getElementById('lyricBox');
+        Array.prototype.forEach.call(box.children,function(el,i){
+          el.className='ly'+(i===lineIdx?' cur':(i>lineIdx?'next':''));
+        });
+        // 滚动到当前行
+        var cur=box.children[lineIdx];
+        if(cur&&cur.scrollIntoView)cur.scrollIntoView({block:'center',behavior:'smooth'});
+      }else{
+        // 唱完自动停止
+        stopRec();
+      }
+    },2600);
+  }
+  function stopRec(){
+    clearInterval(recTimer);clearInterval(lineTimer);recording=false;
+    document.getElementById('btnRec').classList.remove('ing');
+    document.getElementById('btnRec').style.display='none';
+    document.getElementById('recLabel').textContent='';
+    document.getElementById('recState').style.color='var(--cyan)';
+    var grades=['SSS · 唱功超神','SS · 音准极佳','S · 超好听','A · 稳了','B · 再来一遍'];
+    var g=grades[Math.floor(Math.random()*3)];
+    document.getElementById('recState').textContent='评分：'+g;
+    document.getElementById('btnRestart').style.display='flex';
+    document.getElementById('btnDone').style.display='flex';
+    document.getElementById('lblRestart').style.display='block';
+    document.getElementById('lblDone').style.display='block';
+    toast('🎤 演唱完成 · '+g);
+  }
+  document.getElementById('btnRec').addEventListener('click',function(){
+    if(!curSong)return;
+    if(!recording)startRec();else stopRec();
+  });
+  document.getElementById('btnRestart').addEventListener('click',function(){
+    document.getElementById('btnRec').style.display='flex';
+    resetSing();
+    toast('重新录制');
+  });
+  document.getElementById('btnDone').addEventListener('click',function(){
+    toast('✅ 已保存到「我的作品」');
+    go('v-home');
+  });
+
+  // ---------- 共创入口 ----------
+  document.getElementById('homeC5').addEventListener('click',function(){go('v-square');});
+  document.getElementById('homeBanner').addEventListener('click',function(){go('v-square');});
   document.getElementById('squareBanner').addEventListener('click',function(){go('v-sound');});
   document.getElementById('squareTeam').addEventListener('click',function(){go('v-sound');});
 
-  // ===== 声纹三步 =====
-  var sRoot='',sLangs=[],sStyles=[];
-  var sStep=1;
-  function sUpdateBtn(){
+  // ---------- 声纹 ----------
+  var sRoot='',sLangs=[],sStyles=[],sStep=1;
+  function sUpdate(){
     var nxt=document.getElementById('sBtnNext');
-    if(sStep===1){nxt.textContent=sRoot?'下一步':'请选择地域';}
-    else if(sStep===2){nxt.textContent=sLangs.length?'下一步':'请至少选一种语言';}
-    else {nxt.textContent='生成我的文化基因卡';}
+    if(sStep===1)nxt.textContent=sRoot?'下一步':'请选择地域';
+    else if(sStep===2)nxt.textContent=sLangs.length?'下一步':'请至少选一种语言';
+    else nxt.textContent='生成我的文化基因卡';
     nxt.disabled=!((sStep===1&&sRoot)||(sStep===2&&sLangs.length)||(sStep===3&&sStyles.length));
   }
   document.querySelectorAll('#sStep1 .tagx').forEach(function(t){
     t.addEventListener('click',function(){
       document.querySelectorAll('#sStep1 .tagx').forEach(function(x){x.classList.remove('on');});
-      t.classList.add('on');sRoot=t.getAttribute('data-root');sUpdateBtn();
+      t.classList.add('on');sRoot=t.getAttribute('data-root');sUpdate();
     });
   });
   document.querySelectorAll('#sStep2 .tagx').forEach(function(t){
@@ -570,7 +734,7 @@
       t.classList.toggle('on');
       var l=t.getAttribute('data-lang');
       var i=sLangs.indexOf(l);if(i>=0)sLangs.splice(i,1);else sLangs.push(l);
-      document.getElementById('langCount').textContent=sLangs.length;sUpdateBtn();
+      document.getElementById('langCount').textContent=sLangs.length;sUpdate();
     });
   });
   document.querySelectorAll('#sStep3 .tagx').forEach(function(t){
@@ -578,18 +742,21 @@
       t.classList.toggle('on');
       var st=t.getAttribute('data-style');
       var i=sStyles.indexOf(st);if(i>=0)sStyles.splice(i,1);else sStyles.push(st);
-      sUpdateBtn();
+      sUpdate();
     });
   });
   document.getElementById('sBtnNext').addEventListener('click',function(){
     if(sStep===1&&sRoot){sStep=2;document.getElementById('sStep1').style.display='none';
-      document.getElementById('sStep2').style.display='block';document.getElementById('sStep2Bar').style.background='var(--purple)';
+      document.getElementById('sStep2').style.display='block';
+      document.getElementById('sStep2Bar').style.background='var(--purple)';
       document.getElementById('sBtnPrev').style.display='block';}
     else if(sStep===2&&sLangs.length){sStep=3;document.getElementById('sStep2').style.display='none';
-      document.getElementById('sStep3').style.display='block';document.getElementById('sStep3Bar').style.background='var(--purple)';}
-    else if(sStep===3&&sStyles.length){ // 生成基因卡
+      document.getElementById('sStep3').style.display='block';
+      document.getElementById('sStep3Bar').style.background='var(--purple)';}
+    else if(sStep===3&&sStyles.length){
       document.getElementById('sStep3').style.display='none';
-      document.getElementById('sBtnPrev').style.display='none';document.getElementById('sBtnNext').style.display='none';
+      document.getElementById('sBtnPrev').style.display='none';
+      document.getElementById('sBtnNext').style.display='none';
       document.getElementById('geneRoot').textContent=sRoot+' · '+sLangs.join('/');
       var tg=document.getElementById('geneTags');tg.innerHTML='';
       sStyles.forEach(function(st){
@@ -600,20 +767,22 @@
       document.getElementById('sResult').style.display='block';
       setTimeout(function(){document.getElementById('sResult').querySelector('.pop').classList.add('go');},80);
     }
-    sUpdateBtn();
+    sUpdate();
   });
   document.getElementById('sBtnPrev').addEventListener('click',function(){
     if(sStep===2){sStep=1;document.getElementById('sStep2').style.display='none';
-      document.getElementById('sStep1').style.display='block';document.getElementById('sStep2Bar').style.background='rgba(255,255,255,.1)';
+      document.getElementById('sStep1').style.display='block';
+      document.getElementById('sStep2Bar').style.background='rgba(255,255,255,.1)';
       document.getElementById('sBtnPrev').style.display='none';}
     else if(sStep===3){sStep=2;document.getElementById('sStep3').style.display='none';
-      document.getElementById('sStep2').style.display='block';document.getElementById('sStep3Bar').style.background='rgba(255,255,255,.1)';}
-    sUpdateBtn();
+      document.getElementById('sStep2').style.display='block';
+      document.getElementById('sStep3Bar').style.background='rgba(255,255,255,.1)';}
+    sUpdate();
   });
   document.getElementById('goMatch').addEventListener('click',function(){go('v-match');});
-  sUpdateBtn();
+  sUpdate();
 
-  // ===== 匹配 =====
+  // ---------- 匹配 ----------
   var topic='';
   document.querySelectorAll('[data-topic]').forEach(function(t){
     t.addEventListener('click',function(){
@@ -625,7 +794,6 @@
   document.getElementById('btnMatch').addEventListener('click',function(){
     if(!topic){toast('请先选择一个主题');return;}
     document.getElementById('matchLoading').style.display='block';
-    document.getElementById('matchLoading').classList.add('anim');
     document.getElementById('matchResult').style.display='none';
     document.getElementById('teamCard').style.display='none';
     setTimeout(function(){
@@ -634,7 +802,7 @@
       document.getElementById('matchResult').querySelectorAll('.pop').forEach(function(x,i){
         setTimeout(function(){x.classList.add('go');},i*180);
       });
-    },1600);
+    },1500);
   });
   document.getElementById('btnTeam').addEventListener('click',function(){
     document.getElementById('matchResult').style.display='none';
@@ -643,13 +811,13 @@
   });
   document.getElementById('btnStart').addEventListener('click',function(){go('v-studio');});
 
-  // ===== 工坊 =====
-  var wStep=1,selM=null;
+  // ---------- 工坊 ----------
+  var wStep=1;
   document.querySelectorAll('.melody').forEach(function(m){
     m.addEventListener('click',function(){
       document.querySelectorAll('.melody').forEach(function(x){x.classList.remove('sel');
         x.querySelector('.wavebar').style.display='none';});
-      m.classList.add('sel');selM=m.getAttribute('data-m');
+      m.classList.add('sel');
       m.querySelector('.wavebar').style.display='flex';
       document.getElementById('w1Next').style.display='block';
     });
@@ -659,20 +827,19 @@
     document.getElementById('wStep2').style.display='block';
     document.getElementById('wBar1').style.background='var(--purple)';
     document.getElementById('wBar2').style.background='var(--purple)';
-    // 歌词打字
     var lines=document.querySelectorAll('#wStep2 .lyric-line');
-    lines.forEach(function(l,i){l.classList.remove('show');});
+    lines.forEach(function(l){l.classList.remove('show');});
     var t=setInterval(function(){
       var next=document.querySelector('#wStep2 .lyric-line:not(.show)');
       if(next){next.classList.add('show');}
       else{clearInterval(t);document.getElementById('w2Next').style.display='block';}
-    },500);
+    },420);
   });
-  // 微调：点粤语词句
   document.querySelectorAll('#wStep2 .lyric-line[data-w2l]').forEach(function(l){
     l.addEventListener('click',function(){
       document.getElementById('w2Replace').style.display='block';
-      setTimeout(function(){document.getElementById('w2Replace').classList.add('anim');document.getElementById('w2Replace').classList.add('go');},30);
+      document.getElementById('w2Replace').classList.add('anim');
+      setTimeout(function(){document.getElementById('w2Replace').classList.add('go');},30);
     });
   });
   document.querySelectorAll('[data-rep]').forEach(function(r){
@@ -690,8 +857,6 @@
     document.getElementById('wStep3').style.display='block';
     document.getElementById('wBar3').style.background='var(--purple)';
   });
-
-  // 录制
   var recRun=false;
   document.getElementById('w3Record').addEventListener('click',function(){
     if(recRun)return;recRun=true;
@@ -701,40 +866,44 @@
       setTimeout(function(){
         var bar=document.getElementById(tr[0]);
         bar.classList.add('fill');
-        var t2=setInterval(function(){document.getElementById(tr[1]).textContent=tr[2];},0);
-        setTimeout(function(){clearInterval(t2);document.getElementById(tr[1]).textContent=tr[3];document.getElementById(tr[1]).style.color='var(--cyan)';
-          if(idx===2){showSynth();}},1700+idx*900);
-      },200+idx*400);
+        document.getElementById(tr[1]).textContent=tr[2];
+        setTimeout(function(){
+          document.getElementById(tr[1]).textContent=tr[3];
+          document.getElementById(tr[1]).style.color='var(--cyan)';
+          if(idx===2)showSynth();
+        },1700);
+      },300+idx*600);
     });
   });
   function showSynth(){
     document.getElementById('w3Synth').style.display='block';
     setTimeout(function(){
-      var p=0;var iv=setInterval(function(){p+=4;if(p>100)p=100;
+      var p=0;var iv=setInterval(function(){p+=5;if(p>100)p=100;
         document.getElementById('synthPct').textContent=p+'%';
-        if(p===100){clearInterval(iv);document.getElementById('synthWave').style.display='flex';
-          toast('🎉《桥》三城共创完成 · 8 秒副歌');}},90);
+        if(p===100){clearInterval(iv);toast('🎉《桥》三城共创完成');}},80);
     },200);
   }
-  document.getElementById('btnDone').addEventListener('click',function(){go('v-stage');});
+  document.getElementById('btnDone2').addEventListener('click',function(){go('v-stage');});
 
-  // ===== 出海 =====
+  // ---------- 出海 ----------
   document.getElementById('btnExport').addEventListener('click',function(){
-    document.getElementById('btnExport').textContent='正在翻译…';document.getElementById('btnExport').disabled=true;
+    document.getElementById('btnExport').textContent='正在翻译…';
+    document.getElementById('btnExport').disabled=true;
     setTimeout(function(){
       document.getElementById('btnExport').style.display='none';
       document.getElementById('stageResult').style.display='block';
       var LANGS=['中文　阿媽話記得返嚟','English　Mom said, remember to come home','Português　A mamã disse: lembra-te de voltar a casa','ไทย　แม่บอกว่า อย่าลืมกลับบ้าน','Bahasa　Ibu bilang, jangan lupa pulang','粤拼　aa3 maa1 waa6 gei3 dak1 faan1 lei4'];
       var el=document.getElementById('langFlip');var li=0;el.textContent=LANGS[0];
       var iv=setInterval(function(){li++;if(li>=LANGS.length){clearInterval(iv);return;}
-        el.style.opacity=0;setTimeout(function(){el.textContent=LANGS[li];el.style.opacity=1;},240);},900);
-      toast('🌏 一首潮汕话的歌，上线 40 分钟冲到全球第 3');
-    },1200);
+        el.style.opacity=0;
+        setTimeout(function(){el.textContent=LANGS[li];el.style.opacity=1;},240);
+      },900);
+      toast('🌏 上线 40 分钟 · 全球共创榜第 3');
+    },1100);
   });
   document.getElementById('btnEnd').addEventListener('click',function(){go('v-end');});
 
-  // 首次进入提示
-  setTimeout(function(){toast('👆 点主页紫色「共」图标，体验新板块');},600);
+  setTimeout(function(){toast('👆 试试：搜索框搜「桥」，点开去唱');},700);
 })();
 </script>
 </body>
