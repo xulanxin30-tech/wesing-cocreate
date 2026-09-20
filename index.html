@@ -140,6 +140,13 @@
   .navitem.active{color:#c9a0ff}.navitem.active .ic{filter:none}
   .navitem.new .ic{color:var(--purple);filter:none}
   .navitem .dot{position:absolute;top:7px;right:calc(50% - 14px);width:6px;height:6px;border-radius:50%;background:var(--pink)}
+  .navrec{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--red),#ff6b5e);
+    position:absolute;left:50%;top:-16px;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;
+    font-size:20px;box-shadow:0 4px 18px rgba(255,69,58,.55);cursor:pointer;z-index:55;transition:.2s}
+  .navrec:active{transform:translateX(-50%) scale(.92)}
+  .navrec.lbl{top:-38px;font-size:8px;box-shadow:none;background:transparent;color:var(--pink);font-weight:800}
+  .me-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));
+    display:flex;align-items:center;justify-content:center;font-size:13px}
   .toast{position:absolute;left:50%;top:64px;transform:translateX(-50%);background:rgba(20,18,30,.96);
     border:1px solid var(--purple);border-radius:12px;padding:8px 14px;font-size:10.5px;color:#e6dbff;
     opacity:0;transition:.3s;pointer-events:none;z-index:80;white-space:nowrap}
@@ -156,7 +163,7 @@
     <!-- ========== V1 主页 ========== -->
     <div class="view active" id="v-home">
       <div class="sc-hd">
-        <div class="avatar" style="width:28px;height:28px;font-size:12px">阿</div>
+        <div class="avatar" style="width:28px;height:28px;font-size:12px;cursor:pointer" id="homeMe">阿</div>
         <div class="tt" style="font-size:13px">Wesing · Songbook</div>
         <span class="tag" style="background:rgba(255,95,168,.15);color:var(--pink)">共创版</span>
       </div>
@@ -171,12 +178,12 @@
         <div class="b2">与三地音乐人相识 · 共创 · 出海</div>
       </div>
 
-      <div style="font-size:9px;color:var(--sub);margin-top:12px;margin-bottom:4px">功能入口</div>
+      <div style="font-size:9px;color:var(--sub);margin-top:12px;margin-bottom:4px">功能入口 · 点击体验</div>
       <div style="display:flex;gap:12px;justify-content:space-between">
-        <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Local</div></div>
-        <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♫</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Duet</div></div>
-        <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Acap</div></div>
-        <div style="text-align:center"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">▶</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Live</div></div>
+        <div style="text-align:center;cursor:pointer" data-f="Local"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Local</div></div>
+        <div style="text-align:center;cursor:pointer" data-f="Duet"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♫</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Duet</div></div>
+        <div style="text-align:center;cursor:pointer" data-f="Acap"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Acap</div></div>
+        <div style="text-align:center;cursor:pointer" data-f="Live"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">▶</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Live</div></div>
         <div style="text-align:center">
           <div style="width:44px;height:44px;margin:auto;border-radius:50%;background:var(--purple);
             display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;cursor:pointer;
@@ -184,6 +191,13 @@
           <div style="font-size:8px;color:var(--purple2);margin-top:3px;font-weight:800">共创 · NEW</div>
           <div class="dot blink" style="width:6px;height:6px;border-radius:50%;background:var(--pink);margin:2px auto 0"></div>
         </div>
+      </div>
+
+      <div id="homeRec" style="margin-top:10px;display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,rgba(255,69,58,.2),rgba(124,77,255,.2));border:1px solid rgba(255,69,58,.4);border-radius:14px;padding:9px 12px;cursor:pointer">
+        <div style="width:34px;height:34px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-size:15px">🎤</div>
+        <div style="flex:1"><div style="font-size:11px;font-weight:800;color:var(--txt)">录歌 · 开始你的演唱</div>
+        <div style="font-size:8px;color:var(--sub)">选一首歌，点开始录制，假装唱起来</div></div>
+        <span style="color:var(--pink);font-weight:800;font-size:10px">去录歌 ▶</span>
       </div>
 
       <div style="font-size:9px;color:var(--sub);margin-top:14px;margin-bottom:2px">为你推荐 · 点歌去唱</div>
@@ -201,7 +215,7 @@
           <input id="searchInput" placeholder="搜索歌曲或歌手…" autocomplete="off" style="flex:1;background:transparent;border:none;outline:none;color:var(--txt);font-size:11px;font-family:inherit">
         </div>
       </div>
-      <div style="font-size:9px;color:var(--sub);margin-bottom:4px">搜索结果 · 点歌可去 K 歌</div>
+      <div style="font-size:9px;color:var(--sub);margin-bottom:4px" id="searchModeLabel">搜索结果 · 点歌可去 K 歌</div>
       <div id="searchList"></div>
       <div id="searchEmpty" style="display:none;text-align:center;padding:30px 0;font-size:11px;color:var(--sub)">没有找到相关歌曲，试试「桥」「海阔天空」「月亮」</div>
     </div>
@@ -282,9 +296,14 @@
         <div style="display:flex;flex-wrap:wrap;gap:7px">
           <span class="tagx" data-root="广东 · 潮汕">广东 · 潮汕</span>
           <span class="tagx" data-root="广东 · 广州">广东 · 广州</span>
+          <span class="tagx" data-root="广东 · 客家">广东 · 客家</span>
           <span class="tagx" data-root="香港">香港</span>
           <span class="tagx" data-root="澳门">澳门</span>
           <span class="tagx" data-root="福建 · 闽南">福建 · 闽南</span>
+          <span class="tagx" data-root="福建 · 泉州">福建 · 泉州</span>
+          <span class="tagx" data-root="湖北 · 武汉">湖北 · 武汉</span>
+          <span class="tagx" data-root="浙江 · 温州">浙江 · 温州</span>
+          <span class="tagx" data-root="广西 · 柳州">广西 · 柳州</span>
           <span class="tagx" data-root="海外华埠">海外华埠</span>
         </div>
       </div>
@@ -326,8 +345,9 @@
           <div style="font-size:9.5px;color:var(--sub);margin-top:3px" id="geneRoot">广东 · 潮汕</div>
           <div style="margin-top:9px" id="geneTags"></div>
           <div style="font-size:9px;color:var(--sub);margin-top:8px">文化基因辨识度 <b style="color:#8ff5ef">92%</b></div>
+          <div style="font-size:9px;color:var(--sub);margin-top:4px">🌍 同根源 · <b style="color:var(--gold)">12,480</b> 位音乐人已在此 · 开房即可相遇</div>
         </div>
-        <div class="row-cta"><button class="btn-main" id="goMatch">为她找队友 →</button></div>
+        <div class="row-cta"><button class="btn-main" id="goMatch">为她找队友 · 组队开房 →</button></div>
       </div>
     </div>
 
@@ -356,7 +376,7 @@
         </div>
       </div>
       <div id="matchResult" style="display:none">
-        <div style="font-size:9px;color:var(--sub);margin-top:10px;margin-bottom:4px">为你找到 3 位文化互补的队友</div>
+        <div style="font-size:9px;color:var(--sub);margin-top:10px;margin-bottom:4px">为你找到 3 位核心队友 · 另有 <b style="color:var(--gold)">128</b> 位候补在线</div>
         <div class="card pop" style="display:flex;gap:9px;align-items:center">
           <div class="avatar" style="background:linear-gradient(135deg,#c0392b,#f39c12)">J</div>
           <div style="flex:1"><div style="font-size:11px;font-weight:800">JAY · 香港 · 港式 Rapper</div>
@@ -376,13 +396,15 @@
       </div>
       <div id="teamCard" style="display:none">
         <div class="card glow pop" style="text-align:center;padding:13px">
-          <div style="font-size:10px;font-weight:800;color:#c9a0ff">🎉 组队成功 · 共创项目已创建</div>
+          <div style="font-size:10px;font-weight:800;color:#c9a0ff">🎉 组队开房成功 · 共创项目已创建</div>
           <div style="font-size:15px;font-weight:900;margin-top:6px">《桥》· 一曲双词</div>
           <div style="margin-top:7px;display:flex;justify-content:center;gap:6px">
+            <div class="avatar" style="width:26px;height:26px;font-size:11px;background:linear-gradient(135deg,#7C4DFF,#B388FF)">阿</div>
             <div class="avatar" style="width:26px;height:26px;font-size:11px;background:linear-gradient(135deg,#c0392b,#f39c12)">J</div>
             <div class="avatar" style="width:26px;height:26px;font-size:11px;background:linear-gradient(135deg,#0e7c7b,#0EE6D8)">黎</div>
             <div class="avatar" style="width:26px;height:26px;font-size:11px;background:linear-gradient(135deg,#2c3e50,#8e44ad)">A</div>
           </div>
+          <div style="font-size:9px;color:var(--sub);margin-top:7px">房间已开 · <b style="color:#8ff5ef">4 位成员在线</b>（含 1 位虚拟队员加入）· 2 位在围观</div>
         </div>
         <div class="row-cta"><button class="btn-main" id="btnStart">开始创作 →</button></div>
       </div>
@@ -505,6 +527,52 @@
       </div>
     </div>
 
+    <!-- ========== V10 我的主页 ========== -->
+    <div class="view" id="v-me">
+      <div class="sc-hd">
+        <div class="back" data-nav="home">‹</div>
+        <div class="tt">我的主页</div>
+        <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">个人</span>
+      </div>
+      <div class="card pop" style="text-align:center;padding:16px">
+        <div class="avatar" style="width:64px;height:64px;font-size:24px;margin:0 auto">阿</div>
+        <div style="font-size:17px;font-weight:900;margin-top:8px" id="meName">阿嫦</div>
+        <div style="font-size:10px;color:var(--sub);margin-top:3px" id="meRoot">广东 · 潮汕 · 粤语/潮汕话</div>
+        <div style="font-size:10px;color:var(--sub);margin-top:8px;line-height:1.5" id="meBio">唱作人 · 想把家乡声音唱给世界</div>
+        <div style="display:flex;justify-content:center;gap:30px;margin-top:12px">
+          <div><div style="font-size:16px;font-weight:900">236</div><div style="font-size:8px;color:var(--sub)">作品</div></div>
+          <div><div style="font-size:16px;font-weight:900">12,480</div><div style="font-size:8px;color:var(--sub)">粉丝</div></div>
+          <div><div style="font-size:16px;font-weight:900">8</div><div style="font-size:8px;color:var(--sub)">共创</div></div>
+        </div>
+      </div>
+      <div class="card anim" style="margin-top:10px">
+        <div style="font-size:9.5px;font-weight:800;color:#c9a0ff">🧬 我的文化基因</div>
+        <div style="font-size:10px;color:var(--sub);margin-top:5px" id="meGene">#南音 #歌谣 #流行 · 辨识度 92%</div>
+      </div>
+      <div class="card anim" style="margin-top:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer" id="meRec">
+        <div style="font-size:10.5px;font-weight:700">🎤 我唱过的</div>
+        <span style="font-size:9px;color:var(--purple2);font-weight:700">去录歌 ▶</span>
+      </div>
+      <div class="row-cta"><button class="btn-main" id="btnEdit">✏️ 编辑资料</button></div>
+    </div>
+
+    <!-- ========== V11 编辑资料 ========== -->
+    <div class="view" id="v-edit">
+      <div class="sc-hd">
+        <div class="back" data-nav="me">‹</div>
+        <div class="tt">编辑资料</div>
+        <span class="tag" style="background:rgba(255,196,107,.15);color:var(--gold)">我的主页</span>
+      </div>
+      <div style="font-size:10px;font-weight:800;color:var(--sub);margin-bottom:4px">昵称</div>
+      <input id="editName" style="width:100%;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:10px;padding:8px 10px;color:var(--txt);font-size:12px;outline:none;font-family:inherit">
+      <div style="font-size:10px;font-weight:800;color:var(--sub);margin:12px 0 4px">祖籍（选择你的根）</div>
+      <div id="editRoots" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+      <div style="font-size:10px;font-weight:800;color:var(--sub);margin:12px 0 4px">个人简介</div>
+      <input id="editBio" style="width:100%;background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:10px;padding:8px 10px;color:var(--txt);font-size:12px;outline:none;font-family:inherit">
+      <div style="font-size:9px;color:var(--sub);margin-top:6px">编辑后立即生效，主页同步更新</div>
+      <div class="row-cta"><button class="btn-main" id="btnSave">保存</button></div>
+    </div>
+
     <!-- ========== V9 收尾 ========== -->
     <div class="view" id="v-end" style="background:#08080f">
       <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:0 20px">
@@ -521,9 +589,10 @@
   <div class="navbar" id="navbar">
     <div class="navitem active" data-nav="home"><span class="ic">🏠</span>首页</div>
     <div class="navitem" data-nav="square"><span class="ic">🧭</span>发现</div>
+    <div class="navitem" style="pointer-events:none"></div>
     <div class="navitem new" data-nav="square"><span class="ic">🌉</span>共创<span class="dot"></span></div>
-    <div class="navitem" data-nav="msg"><span class="ic">💬</span>消息</div>
     <div class="navitem" data-nav="me"><span class="ic">👤</span>我的</div>
+    <div class="navrec" id="navRec">🎤</div>
   </div>
   <div class="homeind"></div>
 </div>
@@ -554,25 +623,25 @@
   var COV_CLS=['','','c2','c3','c4','c5'];
 
   // ---------- 视图导航 ----------
-  var views=['v-home','v-search','v-sing','v-square','v-sound','v-match','v-studio','v-stage','v-end'];
-  var NAVMAP={'home':'v-home','square':'v-square','sound':'v-sound','match':'v-match','studio':'v-studio','stage':'v-stage','end':'v-end','search':'v-search','sing':'v-sing'};
+  var views=['v-home','v-search','v-sing','v-square','v-sound','v-match','v-studio','v-stage','v-end','v-me','v-edit'];
+  var NAVMAP={'home':'v-home','square':'v-square','sound':'v-sound','match':'v-match','studio':'v-studio','stage':'v-stage','end':'v-end','search':'v-search','sing':'v-sing','me':'v-me','edit':'v-edit'};
   var toastEl=document.getElementById('toast'),toastTimer=null;
   function toast(m){toastEl.textContent=m;toastEl.classList.add('show');clearTimeout(toastTimer);
     toastTimer=setTimeout(function(){toastEl.classList.remove('show');},1700);}
 
   function go(view){
     if(view==='msg'){toast('消息中心（原型占位）');return;}
-    if(view==='me'){toast('个人中心（原型占位）');return;}
     views.forEach(function(v){document.getElementById(v).classList.remove('active');});
     var el=document.getElementById(view);
     if(!el)return;
     el.classList.add('active');el.scrollTop=0;
     el.querySelectorAll('.anim,.pop').forEach(function(x){x.classList.remove('go');void x.offsetWidth;});
     el.querySelectorAll('.anim,.pop').forEach(function(x){setTimeout(function(){x.classList.add('go');},60);});
-    // 导航高亮
+    // 导航高亮（0首页 1发现 2空位 3共创 4我的）
     document.querySelectorAll('.navitem').forEach(function(n){n.classList.remove('active');});
     if(view==='v-home')document.querySelectorAll('.navitem')[0].classList.add('active');
-    else if(view==='v-square'||view==='v-sound'||view==='v-match'||view==='v-studio'||view==='v-stage')document.querySelectorAll('.navitem')[2].classList.add('active');
+    else if(view==='v-square'||view==='v-sound'||view==='v-match'||view==='v-studio'||view==='v-stage')document.querySelectorAll('.navitem')[3].classList.add('active');
+    else if(view==='v-me'||view==='v-edit')document.querySelectorAll('.navitem')[4].classList.add('active');
   }
   document.querySelectorAll('[data-nav]').forEach(function(el){
     el.addEventListener('click',function(e){e.stopPropagation();go(NAVMAP[el.getAttribute('data-nav')]||el.getAttribute('data-nav'));});
@@ -765,6 +834,7 @@
         tg.appendChild(sp);
       });
       document.getElementById('sResult').style.display='block';
+      PROFILE.root=sRoot;PROFILE.langs=sLangs.join('/');
       setTimeout(function(){document.getElementById('sResult').querySelector('.pop').classList.add('go');},80);
     }
     sUpdate();
@@ -903,7 +973,71 @@
   });
   document.getElementById('btnEnd').addEventListener('click',function(){go('v-end');});
 
-  setTimeout(function(){toast('👆 试试：搜索框搜「桥」，点开去唱');},700);
+  // ---------- 录歌入口（底部麦克风 + 主页录歌条） ----------
+  function goRecord(){
+    go('v-search');
+    document.getElementById('searchModeLabel').textContent='录歌 · 选一首，点歌开始演唱';
+    searchInput.placeholder='搜索歌曲或歌手…';
+    setTimeout(function(){searchInput.focus();},120);
+    toast('🎤 选一首歌，点进去开始录制');
+  }
+  document.getElementById('navRec').addEventListener('click',goRecord);
+  document.getElementById('homeRec').addEventListener('click',goRecord);
+  document.getElementById('meRec').addEventListener('click',goRecord);
+
+  // ---------- 主页功能入口点击 ----------
+  document.querySelectorAll('[data-f]').forEach(function(el){
+    el.addEventListener('click',function(){
+      var f=el.getAttribute('data-f');
+      if(f==='Duet'||f==='Local'){
+        go('v-search');
+        searchInput.value='';
+        renderSearch('');
+        setTimeout(function(){searchInput.focus();},120);
+        toast(f+' 歌单 · 点歌去唱');
+      }else{
+        toast(f+' 功能（原型演示：'+f+' 暂为占位）');
+      }
+    });
+  });
+  // 主页头像 → 我的主页
+  document.getElementById('homeMe').addEventListener('click',function(){go('v-me');renderMe();});
+
+  // ---------- 个人主页 + 编辑 ----------
+  var PROFILE={name:'阿嫦',root:'广东 · 潮汕',langs:'粤语/潮汕话',bio:'唱作人 · 想把家乡声音唱给世界'};
+  var ROOTS=['广东 · 潮汕','广东 · 广州','广东 · 客家','香港','澳门','福建 · 闽南','福建 · 泉州','湖北 · 武汉','浙江 · 温州','广西 · 柳州','海外华埠'];
+  function renderMe(){
+    document.getElementById('meName').textContent=PROFILE.name;
+    document.getElementById('meRoot').textContent=PROFILE.root+' · '+PROFILE.langs;
+    document.getElementById('meBio').textContent=PROFILE.bio;
+  }
+  document.getElementById('btnEdit').addEventListener('click',function(){
+    document.getElementById('editName').value=PROFILE.name;
+    document.getElementById('editBio').value=PROFILE.bio;
+    var box=document.getElementById('editRoots');box.innerHTML='';
+    ROOTS.forEach(function(r){
+      var sp=document.createElement('span');
+      sp.className='tagx'+(r===PROFILE.root?' on':'');
+      sp.textContent=r;
+      sp.addEventListener('click',function(){
+        document.querySelectorAll('#editRoots .tagx').forEach(function(x){x.classList.remove('on');});
+        sp.classList.add('on');PROFILE.root=r;
+      });
+      box.appendChild(sp);
+    });
+    go('v-edit');
+  });
+  document.getElementById('btnSave').addEventListener('click',function(){
+    var n=document.getElementById('editName').value.trim();
+    var b=document.getElementById('editBio').value.trim();
+    if(n)PROFILE.name=n;
+    PROFILE.bio=b||PROFILE.bio;
+    renderMe();
+    go('v-me');
+    toast('✅ 资料已保存 · 主页已更新');
+  });
+
+  setTimeout(function(){toast('👆 试试：搜歌、点歌、点 🎤 录歌，或点头像进我的主页');},700);
 })();
 </script>
 </body>
