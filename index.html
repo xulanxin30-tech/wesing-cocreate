@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>湾区共创 · Wesing「共创」板块 Demo</title>
+<style>
+  :root{
+    --purple:#7C4DFF; --purple2:#B388FF; --pink:#FF5FA8; --red:#FF453A;
+    --cyan:#0EE6D8; --gold:#FFC46B; --bg:#0A0A0F; --card:#16161C;
+    --line:rgba(255,255,255,.12); --txt:#F5F5F7; --sub:rgba(255,255,255,.62);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{background:radial-gradient(1000px 700px at 20% 10%,#1b1033 0%,#05050a 60%);
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:"PingFang SC","Microsoft YaHei",sans-serif;color:var(--txt);padding:20px 10px;gap:16px}
+  .hint{font-size:12px;color:var(--sub);letter-spacing:1px}
+  .phone{width:350px;height:680px;border-radius:44px;position:relative;overflow:hidden;
+    background:#000;border:7px solid #1c1c28;box-shadow:0 30px 80px rgba(124,77,255,.35)}
+  .phone::after{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);
+    width:104px;height:22px;background:#000;border-radius:16px;z-index:60}
+  .statusbar{position:absolute;top:0;left:0;right:0;height:40px;display:flex;justify-content:space-between;
+    align-items:center;padding:13px 24px 0;font-size:11px;font-weight:700;z-index:50}
+  .screen{position:absolute;inset:0;padding-top:40px;overflow:hidden;background:#0d0d18}
+  .navbar{position:absolute;left:0;right:0;bottom:0;height:56px;background:rgba(14,13,24,.95);
+    backdrop-filter:blur(8px);border-top:1px solid var(--line);display:flex;z-index:40}
+  .navitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+    font-size:9px;color:var(--sub)}
+  .navitem .ic{font-size:17px;filter:grayscale(1) opacity(.5)}
+  .navitem.active{color:#c9a0ff}.navitem.active .ic{filter:none}
+  .navitem.new .ic{color:var(--purple);filter:none}
+  .navitem .dot{position:absolute;top:8px;right:calc(50% - 15px);width:7px;height:7px;border-radius:50%;
+    background:var(--pink);box-shadow:0 0 8px var(--pink)}
+  .homeind{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:110px;height:4px;
+    background:rgba(255,255,255,.3);border-radius:4px;z-index:60}
+
+  .scene{position:absolute;inset:0;padding:12px 12px 8px;display:none;flex-direction:column;overflow:hidden}
+  .scene.active{display:flex}
+  .sc-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .sc-hd .tt{font-size:15px;font-weight:800;flex:1}
+  .sc-hd .tag{font-size:8.5px;font-weight:700;padding:2px 7px;border-radius:9px;letter-spacing:.5px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:11px;position:relative}
+  .card.glow{border-color:rgba(124,77,255,.5);box-shadow:0 0 20px rgba(124,77,255,.22)}
+  .avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--cyan));
+    display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+  .anim{opacity:0;transform:translateY(14px)}
+  .scene.active .anim.go{animation:rise .5s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes rise{to{opacity:1;transform:translateY(0)}}
+  .pop{opacity:0;transform:scale(.85)}
+  .scene.active .pop.go{animation:pop .5s cubic-bezier(.2,.7,.3,1.2) forwards}
+  @keyframes pop{to{opacity:1;transform:scale(1)}}
+  .blink{animation:blink 1s infinite}@keyframes blink{50%{opacity:.35}}
+  .pulse{animation:pulse 1.4s infinite}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,95,168,.6)}50%{box-shadow:0 0 0 7px rgba(255,95,168,0)}}
+  .bar{height:7px;border-radius:5px;background:rgba(255,255,255,.1);overflow:hidden;flex:1}
+  .bar>i{display:block;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,var(--purple),var(--cyan))}
+  .scene.active .bar.done>i{animation:fill 1.8s cubic-bezier(.2,.7,.3,1) forwards}
+  @keyframes fill{to{width:100%}}
+  .count{font-variant-numeric:tabular-nums}
+  .lyric-line{opacity:0;transition:opacity .3s}.lyric-line.show{opacity:1}
+  .banner{background:linear-gradient(120deg,#3b1163,#7C4DFF 60%,#0EE6D8);border-radius:14px;padding:13px;position:relative}
+  .banner .b1{font-size:14px;font-weight:800}.banner .b2{font-size:9.5px;color:rgba(255,255,255,.82);margin-top:2px}
+  .chip{display:inline-block;font-size:8.5px;font-weight:700;padding:2px 6px;border-radius:7px;margin-right:3px}
+  .chip.gd{background:rgba(255,196,107,.15);color:var(--gold)}
+  .chip.hk{background:rgba(255,95,168,.15);color:var(--pink)}
+  .chip.mo{background:rgba(14,230,216,.15);color:var(--cyan)}
+  .chip.sg{background:rgba(124,77,255,.2);color:var(--purple2)}
+  .tagx{font-size:8.5px;padding:2px 7px;border-radius:7px;background:rgba(255,255,255,.07);border:1px solid var(--line)}
+  .tagx.p{background:rgba(124,77,255,.18);border-color:rgba(124,77,255,.4);color:#d9b8ff}
+  .tagx.c{background:rgba(14,230,216,.1);border-color:rgba(14,230,216,.3);color:#8ff5ef}
+  .tagx.g{background:rgba(255,196,107,.1);border-color:rgba(255,196,107,.3);color:var(--gold)}
+  .btn-main{background:linear-gradient(90deg,var(--purple),#6B2FB8);color:#fff;border:none;font-size:11px;font-weight:700;
+    padding:7px 12px;border-radius:18px}
+  .word-block{background:rgba(0,0,0,.35);border:1px solid var(--line);border-radius:10px;padding:7px 9px;font-size:9.5px;line-height:1.65}
+  .word-block .lang{font-size:8.5px;font-weight:800;color:var(--gold);letter-spacing:1px;margin-bottom:2px}
+  .word-block .lang.cn{color:var(--cyan)}
+  .record-row{display:flex;align-items:center;gap:7px;margin-top:7px}
+  .record-row .who{width:62px;font-size:8.5px;color:var(--sub);flex-shrink:0}
+  .ok-tick{color:var(--cyan);font-weight:800}
+  .spin{width:16px;height:16px;border:2.5px solid rgba(255,255,255,.15);border-top-color:var(--purple);border-radius:50%;
+    animation:spin 1.4s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  .scan{position:relative;overflow:hidden}
+  .scan::after{content:"";position:absolute;left:0;right:0;height:26px;top:-26px;
+    background:linear-gradient(180deg,transparent,rgba(124,77,255,.35),transparent);animation:scanline 1.1s linear infinite}
+  @keyframes scanline{to{transform:translateY(160px)}}
+  .wavebar{display:flex;align-items:flex-end;gap:2px;height:22px}
+  .wavebar i{width:3px;background:linear-gradient(180deg,var(--purple),var(--cyan));border-radius:2px;animation:wave .9s ease-in-out infinite}
+  @keyframes wave{0%,100%{height:5px}50%{height:20px}}
+  .subtitle-line{text-align:center;margin-top:9px;font-size:9.5px;color:var(--sub);letter-spacing:1px}
+  .big-num{font-size:52px;font-weight:900;text-align:center;line-height:1}
+  .big-num.red{color:var(--red)}
+  .caption{max-width:350px;min-height:52px;padding:9px 14px;border-radius:13px;background:rgba(255,255,255,.05);
+    border:1px solid var(--line);font-size:12px;line-height:1.6;color:rgba(255,255,255,.85);text-align:center;transition:.35s}
+  .caption b{color:#c9a0ff}
+  .controls{display:flex;align-items:center;gap:14px}
+  .dots{display:flex;gap:5px}
+  .dotx{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:.3s}
+  .dotx.on{background:var(--purple);box-shadow:0 0 7px var(--purple);transform:scale(1.2)}
+  .btn{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--line);
+    color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.25s}
+  .btn:hover{background:rgba(124,77,255,.4)}
+  .earth{width:74px;height:74px;margin:0 auto;position:relative}
+  .earth svg{width:100%;height:100%;animation:spinS 7s linear infinite}
+  @keyframes spinS{to{transform:rotate(360deg)}}
+  .lang-flip{display:inline-block;transition:.3s}
+  .gba{position:absolute;top:8px;right:8px;background:linear-gradient(90deg,var(--purple),var(--pink));
+    font-size:7.5px;font-weight:800;padding:2px 6px;border-radius:7px;letter-spacing:1px}
+  .rank{font-weight:800;color:var(--gold)}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="statusbar"><span>9:41</span><span>📶 🔋</span></div>
+  <div class="screen" id="screen">
+
+    <!-- S0 启动：黑屏打字 -->
+    <div class="scene active" id="s0">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 26px;gap:16px">
+        <div id="type0" style="font-size:19px;font-weight:700;line-height:1.7;min-height:66px"></div>
+        <div id="brand0" class="anim" style="font-size:15px;font-weight:800;letter-spacing:2px;color:#c9a0ff">🎵 Wesing · 湾区共创</div>
+      </div>
+      <div style="text-align:center;padding-bottom:14px;font-size:8.5px;color:var(--sub)">TENCENT MUSIC · BUILD WITH AI</div>
+    </div>
+
+    <!-- S1 数字冲击 -->
+    <div class="scene" id="s1">
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:30px;padding:0 10px">
+        <div style="text-align:center">
+          <div class="big-num anim" style="font-size:58px">6,000万</div>
+          <div class="anim" style="font-size:10px;color:var(--sub);margin-top:4px">海外华语人口</div>
+        </div>
+        <div style="text-align:center">
+          <div class="big-num anim">100+</div>
+          <div class="anim" style="font-size:10px;color:var(--sub);margin-top:4px">种方言</div>
+        </div>
+        <div style="text-align:center">
+          <div class="big-num red anim">0</div>
+          <div class="anim" style="font-size:10px;color:var(--sub);margin-top:4px">为普通人做的共创舞台</div>
+        </div>
+        <div class="anim" style="text-align:center;font-size:11px;color:var(--sub);line-height:1.7">不是他们不想唱——<br>是找不到人一起唱，也唱不出去。</div>
+      </div>
+    </div>
+
+    <!-- S2 主页：第五个图标长出 -->
+    <div class="scene" id="s2">
+      <div class="sc-hd">
+        <div class="avatar" style="width:28px;height:28px;font-size:12px">阿</div>
+        <div class="tt" style="font-size:13px">Wesing · Songbook</div>
+        <span class="tag" style="background:rgba(255,95,168,.15);color:var(--pink)">NEW</span>
+      </div>
+      <div class="anim" style="background:rgba(255,255,255,.07);border-radius:16px;padding:7px 12px;font-size:10px;color:var(--sub)">🔍 Search for songs or artists</div>
+      <div style="display:flex;gap:14px;justify-content:space-between;margin-top:18px">
+        <div style="text-align:center" class="anim"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Local</div></div>
+        <div style="text-align:center" class="anim"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♫</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Duet</div></div>
+        <div style="text-align:center" class="anim"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">♪</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Acap</div></div>
+        <div style="text-align:center" class="anim"><div class="avatar" style="width:44px;height:44px;margin:auto;background:#2C2C3A;border-radius:50%;font-size:18px">▶</div><div style="font-size:8px;color:var(--sub);margin-top:3px">Live</div></div>
+        <div style="text-align:center" id="c5wrap">
+          <div id="c5ring" style="width:52px;height:52px;margin:auto"></div>
+          <div id="c5label" style="font-size:9px;color:var(--purple2);font-weight:800;margin-top:3px;opacity:0">共创</div>
+          <div class="dot blink" style="width:7px;height:7px;border-radius:50%;background:var(--pink);margin:2px auto 0"></div>
+        </div>
+      </div>
+      <div class="card songcard anim" style="margin-top:22px;display:flex;gap:9px;align-items:center">
+        <div class="avatar" style="background:linear-gradient(135deg,#3b1163,#7C4DFF);width:42px;height:42px;font-size:16px">🎶</div>
+        <div>
+          <div style="font-size:11px;font-weight:700">《桥》· 普粤双词版</div>
+          <div style="font-size:8.5px;color:var(--sub);margin-top:2px">阿嫦 × JAY × 黎生 · 湾区共创</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:auto;padding-bottom:6px;font-size:9.5px;color:var(--sub)">底部五键一个没变，只多了它 →</div>
+    </div>
+
+    <!-- S3 共创广场 -->
+    <div class="scene" id="s3">
+      <div class="sc-hd">
+        <div class="tt">湾区共创</div>
+        <span class="tag" style="background:rgba(124,77,255,.2);color:#c9a0ff">📍 全球华语音乐人</span>
+      </div>
+      <div class="anim"><span class="chip gd">广州</span><span class="chip hk">香港</span><span class="chip mo">澳门</span><span class="chip sg">新加坡</span><span class="chip">洛杉矶</span>
+        <span style="float:right;font-size:8px;color:var(--sub)">1.2 万人在线</span></div>
+      <div class="card glow anim" style="margin-top:10px">
+        <div style="font-size:9px;font-weight:800;color:var(--gold)">🎯 组队需求 · 文化互补</div>
+        <div style="font-size:10.5px;margin-top:5px;line-height:1.5">粤剧花旦 × 粤语 Rapper × 葡式吉他手<br><span style="font-size:8.5px;color:var(--sub)">「想做一首融三城味道的歌」</span></div>
+        <div style="margin-top:6px"><span class="tagx g">粤剧</span><span class="tagx p">Rap</span><span class="tagx c">Fado</span></div>
+      </div>
+      <div class="card anim" style="margin-top:9px">
+        <div style="font-size:10px;font-weight:800">🏆 共创挑战：「一曲双词」</div>
+        <div style="font-size:8.5px;color:var(--sub);margin-top:4px">同一旋律，填普粤双词 · 10 月赛 · 3,241 人报名</div>
+      </div>
+      <div class="card songcard anim" style="margin-top:9px;display:flex;gap:9px;align-items:center">
+        <div class="avatar" style="background:linear-gradient(135deg,#0e7c7b,#0EE6D8);width:40px;height:40px;font-size:15px">🎵</div>
+        <div style="flex:1"><div style="font-size:10.5px;font-weight:700">《Hello 大湾》翻唱共创</div>
+        <div style="font-size:8.5px;color:var(--sub);margin-top:2px">广州 · 新加坡 · 已完成</div></div>
+        <span class="chip c">已完成</span>
+      </div>
+      <div style="text-align:center;margin-top:auto;padding-bottom:6px;font-size:9.5px;color:var(--sub)">点开我的文化档案 →</div>
+    </div>
+
+    <!-- S4 声纹 -->
+    <div class="scene" id="s4">
+      <div class="sc-hd">
+        <div class="tt">我的湾区声纹</div>
+        <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">AI 已生成</span>
+      </div>
+      <div class="card pop" style="display:flex;align-items:center;gap:11px">
+        <div class="avatar" style="width:46px;height:46px;font-size:18px">阿</div>
+        <div>
+          <div style="font-size:13px;font-weight:800">阿嫦 · 潮汕 · 粤东</div>
+          <div style="font-size:9px;color:var(--sub);margin-top:2px">粤剧学院 · 唱作人</div>
+        </div>
+      </div>
+      <div class="card anim" style="margin-top:10px">
+        <div style="font-size:9.5px;font-weight:800;color:#c9a0ff">🧬 文化基因卡</div>
+        <div style="margin-top:6px"><span class="tagx p">粤语 · 母语级</span><span class="tagx c">潮汕话</span><span class="tagx g">南音</span><span class="tagx g">歌谣</span><span class="tagx p">流行</span></div>
+        <div style="font-size:8.5px;color:var(--sub);margin-top:7px">AI 根据 236 首作品自动打标 · 辨识度 <b style="color:#8ff5ef">92%</b></div>
+      </div>
+      <div class="card anim" style="margin-top:10px">
+        <div style="font-size:9.5px;font-weight:800;color:#8ff5ef">📊 跨区域资本画像</div>
+        <div style="display:flex;gap:12px;margin-top:8px;align-items:flex-end;height:52px">
+          <div style="flex:1;text-align:center"><div class="bar done"><i></i></div><div style="font-size:7.5px;color:var(--sub);margin-top:3px">语言 92</div></div>
+          <div style="flex:1;text-align:center"><div class="bar done"><i style="animation-delay:.35s"></i></div><div style="font-size:7.5px;color:var(--sub);margin-top:3px">符号 78</div></div>
+          <div style="flex:1;text-align:center"><div class="bar done"><i style="animation-delay:.7s"></i></div><div style="font-size:7.5px;color:var(--sub);margin-top:3px">社交 65</div></div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:auto;padding-bottom:6px;font-size:9.5px;color:var(--sub)">让 AI 为她找「文化互补」的队友 →</div>
+    </div>
+
+    <!-- S5 匹配 -->
+    <div class="scene" id="s5">
+      <div class="sc-hd">
+        <div class="tt">乐缘匹配 · 一曲双词</div>
+        <span class="tag" style="background:rgba(255,95,168,.18);color:var(--pink)">AI 撮合中</span>
+      </div>
+      <div class="scan card anim" style="display:flex;align-items:center;gap:9px;padding:8px 11px">
+        <div class="spin"></div>
+        <div style="font-size:10px;color:var(--sub)">正在扫描 1.2 万位三地音乐人…</div>
+      </div>
+      <div class="card pop" style="margin-top:9px;display:flex;gap:9px;align-items:center">
+        <div class="avatar" style="background:linear-gradient(135deg,#c0392b,#f39c12)">J</div>
+        <div style="flex:1"><div style="font-size:11px;font-weight:800">JAY · 香港 · 港式 Rapper</div>
+        <div style="font-size:8.5px;color:#b58bff;margin-top:2px">✨ Flow 与南音采样互补度 87%</div></div>
+      </div>
+      <div class="card pop" style="margin-top:7px;display:flex;gap:9px;align-items:center">
+        <div class="avatar" style="background:linear-gradient(135deg,#0e7c7b,#0EE6D8)">黎</div>
+        <div style="flex:1"><div style="font-size:11px;font-weight:800">黎生 · 澳门 · 葡式吉他</div>
+        <div style="font-size:8.5px;color:#b58bff;margin-top:2px">✨ Fado 与潮汕歌谣同属「悲而不伤」</div></div>
+      </div>
+      <div class="card pop" style="margin-top:7px;display:flex;gap:9px;align-items:center">
+        <div class="avatar" style="background:linear-gradient(135deg,#2c3e50,#8e44ad)">A</div>
+        <div style="flex:1"><div style="font-size:11px;font-weight:800">A · 洛杉矶 · 华裔女声</div>
+        <div style="font-size:8.5px;color:#b58bff;margin-top:2px">✨ 英文咬字，兜住方言韵脚</div></div>
+      </div>
+      <div style="text-align:center;margin-top:auto;padding-bottom:6px"><button class="btn-main anim">邀请他们一起唱 · 组队 →</button></div>
+    </div>
+
+    <!-- S6 双词工坊 -->
+    <div class="scene" id="s6">
+      <div class="sc-hd">
+        <div class="tt">共创工坊 · 《桥》</div>
+        <span class="tag" style="background:rgba(14,230,216,.15);color:#8ff5ef">AI 创作中</span>
+      </div>
+      <div class="card glow anim">
+        <div style="font-size:9px;font-weight:800;color:#c9a0ff">🤖 AI 双词工坊 · 同一旋律两版歌词</div>
+        <div class="word-block" style="margin-top:7px">
+          <div class="lang">普通话版</div>
+          <div class="lyric-line">老屋门前的月光，</div>
+          <div class="lyric-line">照着我走远的路上，</div>
+          <div class="lyric-line">阿妈话记得返来，</div>
+          <div class="lyric-line">唱给世界听。</div>
+        </div>
+        <div class="word-block" style="margin-top:6px">
+          <div class="lang cn">粵語版（AI 押韻引擎）</div>
+          <div class="lyric-line">舊屋門前嘅月光，</div>
+          <div class="lyric-line">照住我行遠嘅路，</div>
+          <div class="lyric-line">阿媽話記得返<span style="color:var(--cyan)">屋企</span>，</div>
+          <div class="lyric-line">唱畀世界聽。</div>
+        </div>
+        <div style="font-size:8px;color:var(--sub);margin-top:5px">🎯 九声调校：光(gwong¹)/路(lou⁶) · 已由你修改 1 处</div>
+      </div>
+      <div class="card anim" style="margin-top:9px">
+        <div style="font-size:9.5px;font-weight:800">🎙 三地分轨录制</div>
+        <div class="record-row"><span class="who">阿嫦 · 潮汕</span><div class="bar done"><i></i></div><span class="ok-tick">✔ -12dB</span></div>
+        <div class="record-row"><span class="who">JAY · 香港</span><div class="bar done"><i style="animation-delay:.45s"></i></div><span class="ok-tick">✔ -9dB</span></div>
+        <div class="record-row"><span class="who">A · 洛杉矶</span><div class="bar done"><i style="animation-delay:.9s"></i></div><span class="ok-tick">✔ 上传 63%</span></div>
+      </div>
+      <div class="card anim" style="margin-top:9px;text-align:center;padding:12px">
+        <div style="font-size:10px;color:var(--sub)">🤖 AI 对齐 &amp; 合成…</div>
+        <div class="wavebar" style="justify-content:center;margin-top:6px" id="wave8">
+          <i style="animation-delay:0s"></i><i style="animation-delay:.08s"></i><i style="animation-delay:.16s"></i><i style="animation-delay:.24s"></i><i style="animation-delay:.32s"></i><i style="animation-delay:.4s"></i><i style="animation-delay:.48s"></i><i style="animation-delay:.56s"></i><i style="animation-delay:.64s"></i><i style="animation-delay:.72s"></i><i style="animation-delay:.8s"></i>
+        </div>
+        <div style="font-size:13px;font-weight:800;margin-top:6px">🎉 《桥》· 三城共创完成</div>
+        <div style="font-size:8.5px;color:var(--sub);margin-top:2px">8 秒副歌 · 全场安静听完</div>
+      </div>
+      <div style="text-align:center;margin-top:auto;padding-bottom:6px;font-size:9.5px;color:var(--sub)">下一步，才是这个方案真正的野心 →</div>
+    </div>
+
+    <!-- S7 出海 -->
+    <div class="scene" id="s7">
+      <div class="sc-hd">
+        <div class="tt">湾区舞台 · 一键出海</div>
+        <span class="tag" style="background:rgba(255,196,107,.15);color:var(--gold)">🌏 已出海</span>
+      </div>
+      <div class="card pop" style="text-align:center;padding:14px;position:relative;background:linear-gradient(135deg,rgba(124,77,255,.22),rgba(14,230,216,.1))">
+        <span class="gba">MADE IN GBA</span>
+        <div class="earth">
+          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="none" stroke="rgba(179,136,255,.7)" stroke-width="1.4"/>
+            <ellipse cx="50" cy="50" rx="46" ry="16" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+            <ellipse cx="50" cy="50" rx="16" ry="46" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+            <circle cx="50" cy="50" r="46" fill="none" stroke="rgba(124,77,255,.4)" stroke-width="1.4" stroke-dasharray="8 6"/></svg>
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:6px">一首潮汕话的歌，去向世界</div>
+        <div style="margin-top:6px"><span class="chip gd">广州</span><span class="chip hk">香港</span><span class="chip mo">澳门</span><span class="chip sg">新加坡</span><span class="chip">伦敦</span><span class="chip">洛杉矶</span></div>
+      </div>
+      <div class="card anim" style="margin-top:9px">
+        <div style="font-size:9px;font-weight:800;color:#8ff5ef">🌐 AI 多语字幕 · 同一句词</div>
+        <div id="langFlip" style="font-size:12px;font-weight:700;margin-top:6px;min-height:20px"></div>
+        <div style="font-size:8px;color:var(--sub);margin-top:4px">翻译的不只是字，是那句话还能不能让人鼻酸</div>
+      </div>
+      <div class="card anim" style="margin-top:9px">
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--sub)"><span>🌏 全球共创榜</span><span class="rank">#3</span></div>
+        <div style="font-size:10px;margin-top:5px;color:var(--sub)">#4 Yokohama 合唱团</div>
+        <div style="font-size:12px;font-weight:800;margin-top:3px;color:var(--gold)">#3 粤曲·潮韵《桥》 <span style="color:#8ff5ef;font-size:9px">42 → 3</span></div>
+        <div style="font-size:10px;margin-top:3px;color:var(--sub)">#2 Penang 闽南谣</div>
+        <div style="display:flex;justify-content:space-between;margin-top:7px;font-size:10px"><span>海外播放量</span><b class="count" style="font-size:14px">12,480</b></div>
+        <div class="bar" style="margin-top:4px"><i style="animation:fill 1.8s cubic-bezier(.2,.7,.3,1) forwards"></i></div>
+      </div>
+      <div style="text-align:center;margin-top:auto;padding-bottom:6px;font-size:9.5px;color:var(--sub)">现在，这首歌开始自己走路了 🌏</div>
+    </div>
+
+    <!-- S8 收尾 -->
+    <div class="scene" id="s8">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:0 22px">
+        <div class="anim" style="font-size:34px">🌉</div>
+        <div class="anim" style="font-size:20px;font-weight:800;line-height:1.7;background:linear-gradient(90deg,#fff,#c9a0ff,#8ff5ef);-webkit-background-clip:text;background-clip:text;color:transparent">文化出海，是每个有根的人的权利</div>
+        <div class="anim" style="font-size:11px;color:#c9a0ff;font-weight:700">让每一个有根的人，把家乡声音唱给世界</div>
+        <div class="anim" style="font-size:9px;color:var(--sub)">湾区共创 · TME AI HACKATHON · 赛道一</div>
+      </div>
+      <div style="text-align:center;padding-bottom:14px;font-size:8.5px;color:var(--sub)">感谢观看 · 欢迎交流</div>
+    </div>
+
+  </div>
+
+  <div class="navbar" id="navbar">
+    <div class="navitem"><span class="ic">🏠</span>首页</div>
+    <div class="navitem"><span class="ic">🧭</span>发现</div>
+    <div class="navitem active new" id="navCreate"><span class="ic">🌉</span>共创<span class="dot"></span></div>
+    <div class="navitem"><span class="ic">💬</span>消息</div>
+    <div class="navitem"><span class="ic">👤</span>我的</div>
+  </div>
+  <div class="homeind"></div>
+</div>
+
+<div class="caption" id="caption"></div>
+
+<div class="controls">
+  <button class="btn" id="btnPrev">◀</button>
+  <div class="dots" id="dots"></div>
+  <button class="btn" id="btnNext">▶</button>
+  <button class="btn" id="btnReplay">↻</button>
+</div>
+<div class="hint">💡 点击屏幕或按空格 = 下一步 · 自动播放中</div>
+
+<script>
+(function(){
+  var CAPS=[
+    "<b>开场</b>：每一个人，都有一首没被唱出来的家乡歌。",
+    "<b>缺口</b>：六千万海外华语人口 · 一百多种方言 · 零个给普通人的舞台",
+    "<b>揭示</b>：你熟悉的 Wesing，一个键都没变——第五个入口「共创」长出来了",
+    "<b>广场</b>：五座城市的声音在此相遇，跨地域组队与共创挑战",
+    "<b>供给端</b>：AI 生成文化基因卡，让创作者先有根",
+    "<b>撮合</b>：AI 只做一件事——告诉他们为什么合拍",
+    "<b>创作端</b>：同一旋律两版词，三地分轨，AI 合成（8 秒副歌是全场情绪高点）",
+    "<b>传播端</b>：AI 翻译字幕，一首潮汕话的歌冲上全球榜第 3",
+    "<b>收尾</b>：文化出海，是每个有根的人的权利。"
+  ];
+  var SC=['s0','s1','s2','s3','s4','s5','s6','s7','s8'];
+  var DUR=[5200,7000,7600,6200,6200,6600,10000,7800,5600];
+  var cur=0, playing=true, timer=null, dots=[];
+  var screen=document.getElementById('screen');
+  var caption=document.getElementById('caption');
+  var dotsBox=document.getElementById('dots');
+
+  SC.forEach(function(id,i){
+    var d=document.createElement('div');
+    d.className='dotx'+(i===0?' on':'');
+    d.addEventListener('click',function(){go(i);});
+    dotsBox.appendChild(d);dots.push(d);
+  });
+
+  // 打字机
+  function typeText(el,text,speed,cb){
+    el.textContent='';var i=0;
+    var iv=setInterval(function(){
+      el.textContent=text.slice(0,++i);
+      if(i>=text.length){clearInterval(iv);cb&&cb();}
+    },speed);
+  }
+  function typeLines(el,lines,speed,lineGap,cb){
+    el.textContent='';var li=0;var timer2=setInterval(function(){
+      el.textContent=lines.slice(0,++li).join('\n');
+      if(li>=lines.length){clearInterval(timer2);cb&&cb();}
+    },lineGap);
+  }
+
+  function go(i){
+    cur=(i+SC.length)%SC.length;
+    for(var k=0;k<SC.length;k++){document.getElementById(SC[k]).classList.remove('active');dots[k].classList.remove('on');}
+    var sc=document.getElementById(SC[cur]);
+    sc.classList.add('active');dots[cur].classList.add('on');
+    caption.innerHTML=CAPS[cur];
+
+    // 重置并触发场景内动画
+    sc.querySelectorAll('.anim,.pop').forEach(function(el){el.classList.remove('go');void el.offsetWidth;});
+    sc.querySelectorAll('.anim,.pop').forEach(function(el){
+      var delay=parseFloat(el.style.animationDelay||'0')*1000;
+      setTimeout(function(){el.classList.add('go');},delay);
+    });
+    // 歌词逐行
+    sc.querySelectorAll('.lyric-line').forEach(function(el,idx){el.classList.remove('show');
+      setTimeout(function(){el.classList.add('show');},900+idx*550);});
+
+    // 特殊：S0 打字
+    if(cur===0){
+      var t0=document.getElementById('type0');
+      typeText(t0,'每一个人，都有一首没被唱出来的家乡歌。',90,function(){
+        setTimeout(function(){document.getElementById('brand0').classList.add('go');},200);
+      });
+    }
+    // 特殊：S2 第五个图标描边
+    if(cur===2){ drawRing(); }
+    // 特殊：S7 多语字幕翻牌
+    if(cur===7){ flipLangs(); }
+
+    // 导航显隐
+    var nav=document.getElementById('navbar');
+    nav.style.display=(cur===0||cur===8)?'none':'flex';
+
+    clearTimeout(timer);
+    if(playing){timer=setTimeout(function(){go(cur+1);},DUR[cur]);}
+  }
+
+  function drawRing(){
+    var el=document.getElementById('c5ring');el.innerHTML='';
+    var ns='http://www.w3.org/2000/svg';
+    var svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 52 52');
+    var c=document.createElementNS(ns,'circle');
+    c.setAttribute('cx','26');c.setAttribute('cy','26');c.setAttribute('r','23');
+    c.setAttribute('fill','none');c.setAttribute('stroke','#7C4DFF');c.setAttribute('stroke-width','3');
+    c.setAttribute('stroke-dasharray','145');c.setAttribute('stroke-dashoffset','145');
+    el.appendChild(svg);svg.appendChild(c);
+    c.style.transition='stroke-dashoffset .9s cubic-bezier(.2,.7,.3,1)';
+    setTimeout(function(){c.setAttribute('stroke-dashoffset','0');},150);
+    setTimeout(function(){
+      var f=document.createElementNS(ns,'text');
+      f.setAttribute('x','26');f.setAttribute('y','31');f.setAttribute('text-anchor','middle');
+      f.setAttribute('font-size','16');f.setAttribute('font-weight','800');f.setAttribute('fill','#fff');
+      f.textContent='共';svg.appendChild(f);
+      document.getElementById('c5label').style.opacity=1;
+    },900);
+  }
+
+  var LANGS=['中文　阿媽話記得返嚟','English　Mom said, remember to come home','Português　A mamã disse: lembra-te de voltar a casa','ไทย　แม่บอกว่า อย่าลืมกลับบ้าน','Bahasa　Ibu bilang, jangan lupa pulang','粤拼　aa3 maa1 waa6 gei3 dak1 faan1 lei4'];
+  function flipLangs(){
+    var el=document.getElementById('langFlip');var li=0;
+    el.textContent=LANGS[0];
+    var iv=setInterval(function(){li++;if(li>=LANGS.length){clearInterval(iv);return;}
+      el.style.opacity=0;
+      setTimeout(function(){el.textContent=LANGS[li];el.style.transition='opacity .25s';el.style.opacity=1;},250);
+    },950);
+  }
+
+  screen.addEventListener('click',function(){go(cur+1);});
+  document.getElementById('btnPrev').addEventListener('click',function(){go(cur-1);});
+  document.getElementById('btnNext').addEventListener('click',function(){go(cur+1);});
+  document.getElementById('btnReplay').addEventListener('click',function(){go(0);});
+  document.addEventListener('keydown',function(e){if(e.code==='Space'){e.preventDefault();go(cur+1);}});
+
+  go(0);
+})();
+</script>
+</body>
+</html>
