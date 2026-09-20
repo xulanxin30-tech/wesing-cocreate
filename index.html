@@ -64,6 +64,7 @@
   .btn-main{background:linear-gradient(90deg,var(--purple),#6B2FB8);color:#fff;border:none;font-size:11.5px;font-weight:700;
     padding:9px 16px;border-radius:20px;cursor:pointer;transition:.2s}
   .btn-main:active{transform:scale(.96)}
+  .btn-main:disabled{opacity:.4;pointer-events:none}
   .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--txt);font-size:11px;font-weight:700;
     padding:8px 14px;border-radius:20px;cursor:pointer}
   .row-cta{display:flex;gap:8px;justify-content:center;margin-top:auto;padding:8px 0 4px;flex-shrink:0}
@@ -784,13 +785,13 @@
   document.getElementById('squareTeam').addEventListener('click',function(){go('v-sound');});
 
   // ---------- 声纹 ----------
-  var sRoot='',sLangs=[],sStyles=[],sStep=1;
+  var sRoot='',sLangs=[],sStyles=[],sStep=1,sLangTimer=null,sStyleTimer=null;
   function sUpdate(){
     var nxt=document.getElementById('sBtnNext');
     if(sStep===1)nxt.textContent=sRoot?'下一步':'请选择地域';
     else if(sStep===2)nxt.textContent=sLangs.length?'下一步':'请至少选一种语言';
     else nxt.textContent='生成我的文化基因卡';
-    nxt.disabled=!((sStep===1&&sRoot)||(sStep===2&&sLangs.length)||(sStep===3&&sStyles.length));
+    nxt.disabled=false;
   }
   document.querySelectorAll('#sStep1 .tagx').forEach(function(t){
     t.addEventListener('click',function(){
@@ -806,6 +807,9 @@
       var l=t.getAttribute('data-lang');
       var i=sLangs.indexOf(l);if(i>=0)sLangs.splice(i,1);else sLangs.push(l);
       document.getElementById('langCount').textContent=sLangs.length;sUpdate();
+      // 可多选：停止点击 0.9 秒后自动进入下一步
+      clearTimeout(sLangTimer);
+      if(sLangs.length)sLangTimer=setTimeout(function(){nextStep();},900);
     });
   });
   document.querySelectorAll('#sStep3 .tagx').forEach(function(t){
@@ -814,9 +818,15 @@
       var st=t.getAttribute('data-style');
       var i=sStyles.indexOf(st);if(i>=0)sStyles.splice(i,1);else sStyles.push(st);
       sUpdate();
+      // 可多选：停止点击 0.9 秒后自动生成基因卡
+      clearTimeout(sStyleTimer);
+      if(sStyles.length)sStyleTimer=setTimeout(function(){nextStep();},900);
     });
   });
   function nextStep(){
+    if(sStep===1&&!sRoot){toast('请先选择一个地区');return;}
+    if(sStep===2&&!sLangs.length){toast('请至少选一种语言');return;}
+    if(sStep===3&&!sStyles.length){toast('请至少选一个风格');return;}
     if(sStep===1&&sRoot){sStep=2;document.getElementById('sStep1').style.display='none';
       document.getElementById('sStep2').style.display='block';
       document.getElementById('sStep2Bar').style.background='var(--purple)';
